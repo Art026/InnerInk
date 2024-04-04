@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="journals.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="bgimage"></div>
+    <div class="back"> 
+        <button onclick="location.href='/userhome'"><img src="left-arrow.png" alt=""></button>
+    </div>      
+    <div class="boxes">
+        <div class="proverb-container">
+            <a href="#" id="journal-link"><img src="journal.png" alt=""></a>
+        </div>
+        <div class="proverb-container">
+            <a href="#" id="reflect-link"><img src="reflect.png" alt=""></a>
+        </div>
+        <div class="proverb-container">
+            <a href="/newgoal"><img src="goals.png" alt=""></a>
+        </div>
+    </div>
+<script>
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const journalLink = document.getElementById("journal-link");
+        if (journalLink) {
+            journalLink.addEventListener("click", async function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                try {
+                    const userId = '<%= user._id %>'; // Accessing the user ID from EJS
+                    const response = await fetch('/journaldisplay?userId=' + userId);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch journal entries');
+                    }
+                    // const responseData = await response.json();
+                    // Redirect to journaldisplay page with the user ID as a query parameter
+                    window.location.href = '/journaldisplay?userId=' + userId;
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        }
+    });
+</script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const reflectLink = document.getElementById("reflect-link");
+        if (reflectLink) {
+            reflectLink.addEventListener("click", async function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                try {
+                    const userId = '<%= user._id %>'; // Accessing the user ID from EJS
+                    const response = await fetch('/reflectentries?userId=' + userId);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch journal entries');
+                    }
+                    // const responseData = await response.json();
+                    // Redirect to journaldisplay page with the user ID as a query parameter
+                    window.location.href = '/reflectentries?userId=' + userId;
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

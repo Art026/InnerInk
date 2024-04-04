@@ -1,0 +1,339 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.background-image {
+    background-image: url('bg6.jpg'); 
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+.background-image h1{
+    margin-top: 120px;
+}
+  .transparent-bar {
+          width: 100%;
+          /* padding: 10px; */
+          position: fixed;
+          top: 0;
+          left: 0;
+          text-align: right;
+          z-index: 1;
+          overflow: hidden;
+  }
+
+#button-pop-up{
+    width:100px;
+    border-radius: 20px;
+    margin-right: 40px;
+    background-color: #95b4af;
+}
+
+
+
+#logo {
+        float:left;
+        margin-left: 90px;
+}
+.menu {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+.menu li {
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 25px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        margin-top: 50px;
+        
+     }   
+.menu li a {
+        color: rgb(231, 231, 231);
+        text-decoration: none;
+        margin-right: 70px;
+        color: rgb(51, 71, 51);
+        /* font-family:"Dancing Script",cursive; */
+ 
+    } 
+.solid-bar {
+    background-color: rgba(255, 255, 255, 0.5); 
+    /* Change the background color to solid */
+    }
+h1 {
+          
+        font-family: "Dancing Script", cursive;
+        font-optical-sizing: auto;
+        /* font-weight: 400; */
+        font-style: normal;
+        color:  rgb(35, 95, 48);
+}
+h1:hover {--_p: 100%}
+#word {
+    margin: auto;
+    /* margin-bottom: 150px; */
+    color: rgb(35, 95, 48);
+    /* font-family: cursive; */
+        --s: 0.1em;   /* the thickness of the line */
+        --c: rgb(35, 95, 48); /* the color */
+    /* font: 700 normal 2.5em 'tahoma'; */
+    font-family: "Dancing Script", cursive;
+        /* font-family: 'Times New Roman'; */
+        font-optical-sizing: auto;
+        font-weight: 900;
+        font-size: 60px;
+
+
+}
+.middle{
+    color: rgba(18, 39, 23, 0.911);
+    font-weight: bolder;
+}
+.middle h2{
+    font-size: 50px;
+}
+
+:root {
+    /* 
+      One-stop magic hue shift
+      We're using oklch(), so these might not be the hue values you are familiar with 
+    See: https://oklch.com/
+    */
+    --hue: 145; /* change me (0-360) */
+    --hue-adjust: 135; /* and me */
+  
+    --hue-2: calc(var(--hue) + var(--hue-adjust));
+  
+    --page-background: oklch(10% 0.0666 var(--hue));
+  }
+  button {
+    --button-background: oklch(20% 0.0666 var(--hue));
+    --text-base: oklch(45% 0.175 var(--hue));
+    --text-hover: oklch(85% 0.145 calc(var(--hue) + 5));
+    --shadow-start: oklch(95% 0.145 var(--hue-2));
+    --shadow-end: oklch(60% 0.29 var(--hue));
+    /* No color function, so we can use different opacity values */
+    --shadow-inner: 90deg 0.29 var(--hue);
+    all: unset;
+    /* Text */
+    color: var(--text-base);
+    font: 700 1.125rem/1.2 Raleway, sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    /* Button sizing */
+    padding: 1em;
+    max-width: 100%;
+    width: 20em;
+    /* Button styling */
+    background-color: var(--button-background);
+    background-clip: padding-box;
+    /* border: 5px solid var(--text-base); */
+    border-radius: 2em;
+    cursor: pointer;
+    /* Effects */
+    position: relative;
+    transition: 0.25s ease-out;
+  
+    /* Set up pseudo elements */
+    &::before,
+    &::after {
+      content: "";
+      border-radius: inherit;
+      transition: inherit;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+  
+    /* Gradient shadow */
+    &::before {
+      /* Position */
+      inset: -0.2em;
+      z-index: -1;
+  
+      /* Effect */
+      background: linear-gradient(var(--shadow-start), var(--shadow-end));
+      filter: blur(1.2em) saturate(1.2);
+  
+      /* Animation */
+      transform-origin: bottom;
+      transform: scaleY(0.5);
+      opacity: 0;
+    }
+  
+    /* Semi-transparent blended box-shadow brightens up the border */
+    &::after {
+      /* Effect */
+      box-shadow: inset 0 0 0 1px #fff, /* inner pixel */
+        0 0 0 4px hsla(0deg, 0%, 100%, 0.5), /* lightened border */
+        1px 1px 0 4px #fff; /* outer pixel */
+      mix-blend-mode: overlay;
+  
+      /* Animation */
+      opacity: 0;
+    }
+  
+    &:hover,
+    &:focus {
+      color: var(--text-hover);
+  
+      /*  Lighten border */
+      border-color: transparent;
+  
+      /* Inner shadow */
+      box-shadow:
+        inset 0 1.4em 0 oklch(var(--shadow-inner) / 0.1), /* gloss */
+        inset 0 0 1.4em oklch(var(--shadow-inner) / 0.32), /* inner glow */
+        0 1px 1px oklch(var(--shadow-inner) / 0.32); /* bottom line */
+  
+      /* Show effects */
+      &::before,
+      &::after {
+        transform: none;
+        opacity: 1;
+      }
+    }
+  }
+  .three-col{
+    display: flex;
+  }
+  table td{
+    text-align: center;
+  }
+  /* #names{
+    font-size: 20px;
+    color: rgba(18, 39, 23, 0.911);
+    text-align: justify;
+    }
+#names td{
+        padding-bottom: 50px; 
+        padding-right: 90px;
+        padding-left: 90px;
+  } */
+.w3-opacity-min{opacity:0.75}
+.w3-black{color:rgba(23, 39, 27, 0.911)!important;background-color:#bbbbbb!important}
+
+#bottom td{
+    padding-right: 200px;
+    padding-top: 200px;
+
+}
+#bottom li{
+    padding-bottom: 50px;
+    padding-top: 50px;
+    font-size: 40px;
+    color: rgba(18, 39, 23, 0.911);
+    font-weight: bolder;
+    text-align: left;
+
+    
+}
+#bottom img{
+    width:600px;
+    height:500px;
+}
+
+
+#bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Adjust as needed */
+  }
+
+#bottom button{
+    margin-bottom: 150px;
+    margin-top: 100px;
+
+}
+
+
+#bottom ul {
+	padding: 0;
+	margin: 0;
+}
+
+svg {
+    display: block;
+    font: 5em 'Montserrat';
+    width: 800px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.text-copy {
+    fill: none;
+    stroke: white;
+    stroke-dasharray: 6% 29%;
+    stroke-width: 5px;
+    stroke-dashoffset: 0%;
+    animation: stroke-offset 5.5s infinite linear;
+}
+
+.text-copy:nth-child(1){
+    stroke: #5f5dbd;
+    animation-delay: -1;
+}
+
+.text-copy:nth-child(2){
+    stroke: #5e87b8;
+    animation-delay: -2s;
+}
+
+.text-copy:nth-child(3){
+    stroke: #1f6f78;
+    animation-delay: -3s;
+}
+
+.text-copy:nth-child(4){
+    stroke: #53a8b6;
+    animation-delay: -4s;
+}
+
+.text-copy:nth-child(5){
+    stroke: #5e87b8;
+    animation-delay: -5s;
+}
+
+@keyframes stroke-offset {
+    100% {stroke-dashoffset: -35%;}
+}
+
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%; /* Adjust the width as needed */
+  height: 100%; /* Adjust the height as needed */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+}
+
+.image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)); /* Adjust the gradient as needed */
+}

@@ -1,0 +1,106 @@
+.home-section
+.bgimg{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-image: url('bg23.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1; 
+  }
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.home-section h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    font-size: 60px;
+    background: rgb(255,0,128);
+background: linear-gradient(90deg, rgba(255,0,128,1) 0%, rgba(83,5,133,1) 47%);
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent */}
+
+
+    .entries {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Increase minimum width of the entry */
+        /* gap: 100px; */
+        text-wrap: wrap;
+    }
+    
+    .entry {
+
+        background-color: #f2f2f2;
+        opacity: 0.8;
+        border-radius: 10px;
+        height: 300px;
+        padding: 20px;
+        margin: 50px;
+        box-shadow: 0 0 5px rgba(34, 156, 130, 0.1);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        word-wrap: break-word; /* Wrap long words */
+        overflow: hidden; /* Hide overflowing content */
+    }
+
+    .entry:hover {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    
+    .entry-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        overflow: auto;
+    }
+    
+    .entry-modal-content {
+        position: absolute;
+        width: 150%;
+        height: 70%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 80%; /* Set maximum width for the modal content */
+        overflow-wrap: break-word; /* Wrap the text within the modal content */
+    }
+    
+
+    .add-entry img{
+        margin: 10px;
+        margin-top: 40px;
+        width: 150px;
+        height: 150px;
+    }
+
+    .add-entry {
+        border: none; /* Remove border */
+        background-color: transparent; /* Set background color to transparent */
+        color: inherit; /* Inherit text color */
+        cursor: pointer; /* Change cursor to pointer on hover */
+        padding: 0; /* Remove padding */
+        font-size: inherit; /* Inherit font size */
+    }
+
+    .expanded-image {
+        width: 200px; /* Adjust size as needed */
+        height: auto;
+    }
+    

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> User Home Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="sidebarstyles.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <img src="ink.png" alt="" class='bx bxl-c-plus-plus icon' style="height: 50px; width: 150px; margin-right: 10px;">
+      <i class='bx bx-menu' id="btn" ></i>
+    </div>
+    <ul class="nav-list">
+      <li>
+        <a href="/userhome">
+          <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Today</span>
+        </a>
+         <span class="tooltip">Today</span>
+      </li>
+      <li style="position: relative;
+      margin: 8px 0;
+      list-style: none;">
+       <a href="/calendar" style="padding: 14px 0;">
+         <img id="calendaricon" class='bx bx-grid-alt' src="calendar(1).png">
+         <span class="links_name">Calendar</span>
+       </a>
+       <span class="tooltip">Calendar</span>
+     </li>
+     <li style="position: relative;
+      margin: 8px 0;
+      list-style: none;">
+       <a id="timeline-link" href="#" style="padding: 14px 0;">
+         <img id="calendaricon" class='bx bx-grid-alt' src="timeline.png">
+         <span class="links_name">Timeline</span>
+       </a>
+       <span class="tooltip">Timeline</span>
+     </li> <br>
+
+    <li style="position: relative;
+    margin: 8px 0;
+    list-style: none;">
+       <a href="#">
+         <a href="/journals" style="padding: 12px 0;"><span class="links_name"><h4> &nbsp; Journals</h4></span> </a>
+       </a>
+     </li>
+     <li style="position: relative;
+      margin: 8px 0;
+      list-style: none;">
+       <a href="/jtype" style="padding: 14px 0;">
+         <img id="calendaricon" class='bx bx-grid-alt' src="book.png">
+         <span class="links_name">Journal</span>
+       </a>
+       <span class="tooltip">Journal</span>
+     </li>
+     <li>
+      <a href="/reflect">
+        <i class='bx bx-chat' ></i>
+        <span class="links_name">Reflect</span>
+      </a>
+      <span class="tooltip">Reflect</span>
+    </li> 
+    <li style="position: relative;
+    margin: 8px 0;
+    list-style: none;">
+     <a href="/newgoal" style="padding: 14px 0;">
+       <img id="calendaricon" class='bx bx-grid-alt' src="target.png">
+       <span class="links_name">Goals</span>
+     </a>
+     <span class="tooltip">Goals</span>
+   </li>
+
+     <li class="profile">
+        <a href="/logout" style="padding: 12px 5px;">
+            <i class='bx bx-log-out' id="log_out"></i>
+            <span class="links_name">Logout</span>
+        </a>        
+      </li>
+    </ul>
+  </div>
+  <!-- <%- include("partials/sb.ejs") %> -->
+  <section class="home-section">
+      <div class="text">
+        <h5 id="hometop">Day, Date</h5>    
+        <h3><span class="links_name"><% if(user) {%>
+          Hey, <%= user.name %>!
+       <% }%></span></h3>
+    </div>
+
+    <div class="mid">
+      <div class="homemid">
+        <div class="week-container">
+            <img src="calendar.jpg" alt="">
+            <h4 id="week"></h4>
+
+            <div id="datesContainer" class="dates"></div>
+        </div>
+        <div class="proverb-container" id="proverb-container">
+          <p id="proverb"></p>
+          <p id="author"></p>
+          <a href="/jtype"><button type="button" class="btn btn-outline-secondary">Start Your Day</button>
+          </a>
+        </div>
+      </div>
+
+      <div class="homemid">
+        <div class="dashboard-component">
+          <h4>Streak</h4>
+          <canvas id="entryChart" width="400" height="200"></canvas>
+      </div>
+
+        <div class="dashboard-component1">
+          <a href="/journals"><h4>Total Entries</h4>
+          <h4><div id="number_entries"></div></h4></a>
+      </div>
+
+
+        
+      </div>
+    </div>
+  </section>
+
+
+ 
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+            const backgroundImageList = [
+                "proverb1.png",
+                "proverb2.png",
+                "proverb3.png",
+                "proverb4.png",
+                "proverb5.png"
+            ];
+
+            // Get a random index
+            const randomIndex = Math.floor(Math.random() * backgroundImageList.length);
+
+            // Get the proverb container element
+            const proverbContainer = document.getElementById("proverb-container");
+
+            // Set the background image randomly
+            proverbContainer.style.backgroundImage = `url('${backgroundImageList[randomIndex]}')`;
+        });
+</script>
+  
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const timelineLink = document.getElementById("timeline-link");
+    if (timelineLink) {
+        timelineLink.addEventListener("click", async function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            const userId = '<%= user._id %>'; // Accessing the user ID from EJS
+            
+            try {
+                const response = await fetch('/timeline?userId=' + userId);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch timeline entries');
+                }
+                window.location.href = '/timeline?userId=' + userId;
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    }
+});
+
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/entrycount/' + '<%= user._id %>')
+        .then(response => response.json())
+        .then(data => {
+            const { sum } = data;
+
+            // Animation settings
+            const duration = 200000; // Duration of the animation in milliseconds
+            const start = 0;
+            const end = sum;
+            const step = Math.ceil((end - start) / (duration / 16)); // Number of increments per animation frame (assuming 60 fps)
+
+            // Function to animate counting
+            function animateCount(current, end, step) {
+                if (current < end) {
+                    document.getElementById('number_entries').textContent = current;
+                    setTimeout(() => animateCount(current + step, end, step), 16); // Update every animation frame (60 fps)
+                } else {
+                    document.getElementById('number_entries').textContent = end; // Ensure final value is accurate
+                }
+            }
+
+            // Start the counting animation
+            animateCount(start, end, step);
+        })
+        .catch(error => {
+            console.error('Error fetching total entries:', error);
+        });
+});
+
+</script>
+<script>
+  let sidebar = document.querySelector(".sidebar");
+  let closeBtn = document.querySelector("#btn");
+
+  closeBtn.addEventListener("click", ()=>{
+    sidebar.classList.toggle("open");
+    menuBtnChange();
+  });
+  function menuBtnChange() {
+   if(sidebar.classList.contains("open")){
+     closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+   }else {
+     closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+   }
+  }
+
+  var list = [
+  { proverb: "Wherever you are, be all there.", author: "-Jim Elliot" }, 
+  { proverb: "The quieter you become, the more you can hear.", author: "-Ram Dass" }, 
+  { proverb: "You are allowed to be both a masterpiece and a work in progress simultaneously.", author: "-Sophia Bush" }, 
+  { proverb: "To fall in love with yourself is the first secret to happiness.", author: "-Robert Morley" },
+  { proverb: "Set peace of mind as your highest goal, and organize your life around it.", author: "-Brian Tracy" },
+  { proverb: "Balance is not something you find, it's something you create.", author: "-Jana Kingsford" },
+  { proverb: "Happiness is not a matter of intensity but of balance, order, rhythm, and harmony.", author: "-Thomas Merton" },
+  { proverb: "The only person you should try to be better than is the person you were yesterday.", author: "" }
+];
+
+function fun() {
+  var ran = Math.floor(Math.random() * (list.length));
+  document.getElementById("proverb").innerHTML = list[ran].proverb;
+  document.getElementById("author").innerHTML = list[ran].author;
+}
+
+fun();
+
+
+    const date = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    document.getElementById("hometop").textContent = formattedDate;
+
+    function getWeek(date) {
+    const oneJan = new Date(date.getFullYear(), 0, 1);
+    const numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+    return Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
+    }
+    const weekNumber = getWeek(date);
+    document.getElementById("week").textContent = "Week " + weekNumber;
+
+
+    const datesContainer = document.getElementById('datesContainer');
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    for (let i = 0; i < 7; i++) {
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay() + i);
+        
+        const dayOfWeek = daysOfWeek[currentDate.getDay()];
+        const formattedDate = currentDate.toLocaleDateString('en-US', { day: 'numeric' });
+
+        const dateElement = document.createElement('div');
+        dateElement.classList.add('date');
+
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('day');
+        dayElement.textContent = dayOfWeek;
+
+        const dateValueElement = document.createElement('div');
+        dateValueElement.classList.add('date-value');
+        dateValueElement.textContent = formattedDate;
+
+        dateElement.appendChild(dayElement);
+        dateElement.appendChild(dateValueElement);
+
+        datesContainer.appendChild(dateElement);  
+      }
+</script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+ 
+<script>
+$(document).ready(function () {
+    // Initialize counts for each day of the week
+    const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const journalCounts = Array(7).fill(0);
+    const reflectCounts = Array(7).fill(0);
+    let entryChart; // Declare entryChart variable outside the functions
+
+    function fetchCounts(dayIndex) {
+        $.ajax({
+            url: '/daycount',
+            method: 'GET',
+            data: { dayOfWeek: weekDays[dayIndex], userId: '<%= user._id %>' }, // Pass the userId as a query parameter
+            success: function (response) {
+                journalCounts[dayIndex] = response.journalCount || 0;
+                reflectCounts[dayIndex] = response.reflectCount || 0;
+                updateChart();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function updateChart() {
+        if (entryChart) {
+            entryChart.destroy();
+        }
+
+        const ctx = document.getElementById('entryChart').getContext('2d');
+        entryChart = new Chart(ctx, {
+            type: 'line', // Change type to 'line'
+            data: {
+                labels: weekDays,
+                datasets: [{
+                    label: 'Journal Entries',
+                    data: journalCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    fill: false // Ensure no fill between data points for a line chart
+                },
+                {
+                    label: 'Reflect Entries',
+                    data: reflectCounts,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    fill: false // Ensure no fill between data points for a line chart
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    for (let i = 0; i < 7; i++) {
+        fetchCounts(i);
+    }
+});
+
+</script>
+
+
+
+</body>
+</html>

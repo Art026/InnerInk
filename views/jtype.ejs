@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> User Home Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="sidebarstyles.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="type.css">
+  
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <!-- <%- include("partials/sb.ejs") %> -->
+  <div class="sidebar">
+    <div class="logo-details">
+      <img src="ink.png" alt="" class='bx bxl-c-plus-plus icon' style="height: 50px; width: 150px; margin-right: 10px;">
+      <i class='bx bx-menu' id="btn" ></i>
+    </div>
+    <ul class="nav-list">
+      <li>
+        <a href="/userhome">
+          <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Today</span>
+        </a>
+         <span class="tooltip">Today</span>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Templates</span>
+        </a>
+         <span class="tooltip">Template</span>
+         <div class="dropdown">
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#" onclick="applyTemplate('template1')">Template 1</a>
+                <a class="dropdown-item" href="#" onclick="applyTemplate('template2')">Template 2</a>
+                <a class="dropdown-item" href="#" onclick="applyTemplate('template3')">Template 3</a>
+                <a class="dropdown-item" href="#" onclick="applyTemplate('template4')">Template 4</a>
+                <a class="dropdown-item" href="#" onclick="applyTemplate('template5')">Template 5</a>
+            </div>
+        </div>
+      </li>
+      <li style="position: relative;
+      margin: 8px 0;
+      list-style: none;">
+       <a href="/calendar" style="padding: 14px 0;">
+         <img id="calendaricon" class='bx bx-grid-alt' src="calendar(1).png">
+         <span class="links_name">Calendar</span>
+       </a>
+       <span class="tooltip">Calendar</span>
+     </li>
+     <li style="position: relative;
+      margin: 8px 0;
+      list-style: none;">
+       <a id="timeline-link" href="#" style="padding: 14px 0;">
+         <img id="calendaricon" class='bx bx-grid-alt' src="timeline.png">
+         <span class="links_name">Timeline</span>
+       </a>
+       <span class="tooltip">Timeline</span>
+     </li> <br>
+
+    <li style="position: relative;
+    margin: 8px 0;
+    list-style: none;">
+       <a href="#">
+         <a href="/journals" style="padding: 12px 0;"><span class="links_name"><h4> &nbsp; Journals</h4></span> </a>
+       </a>
+     </li>
+     <li style="position: relative;
+      margin: 8px 0;
+      list-style: none;">
+       <a href="/jtype" style="padding: 14px 0;">
+         <img id="calendaricon" class='bx bx-grid-alt' src="book.png">
+         <span class="links_name">Journal</span>
+       </a>
+       <span class="tooltip">Journal</span>
+     </li>
+     <li>
+      <a href="/reflect">
+        <i class='bx bx-chat' ></i>
+        <span class="links_name">Reflect</span>
+      </a>
+      <span class="tooltip">Reflect</span>
+    </li> 
+    <li style="position: relative;
+    margin: 8px 0;
+    list-style: none;">
+     <a href="/newgoal" style="padding: 14px 0;">
+       <img id="calendaricon" class='bx bx-grid-alt' src="target.png">
+       <span class="links_name">Goals</span>
+     </a>
+     <span class="tooltip">Goals</span>
+    </li>
+
+    <li class="profile">
+        <a href="/logout" style="padding: 12px 5px;">
+            <i class='bx bx-log-out' id="log_out"></i>
+            <span class="links_name">Logout</span>
+        </a>        
+    </li>
+    </ul>
+  </div>
+  <section class="home-section">
+    <div class="background-image"></div> <!-- Add this div for the background image -->
+    <div class="midbackground"></div>
+    <div class="end">
+        <div class="text">
+            <h5 id="hometop">Day, Date</h5>    
+            <h4>New Entry</h4>
+        </div>
+        <div class="microphone-icon" id="microphone-icon">
+          <img src="voice.png" class='bx bxs-microphone'>
+      </div>
+        <div class="moodbar" id="moodbar">
+          <h5>How was your day?</h5>
+          <div class="options">
+              <div class="option" onclick="setMood('v_happy')">
+                  <img src="v_happy.png" alt="" id="v_happy_img">
+              </div>
+              <div class="option" onclick="setMood('happy')">
+                  <img src="happy.png" alt="" id="happy_img">
+              </div>
+              <div class="option" onclick="setMood('neutral')">
+                  <img src="neutral.png" alt="" id="neutral_img">
+              </div>
+              <div class="option" onclick="setMood('sad')">
+                  <img src="sad.png" alt="" id="sad_img">
+              </div>
+              <div class="option" onclick="setMood('v_sad')">
+                  <img src="v_sad.png" alt="" id="v_sad_img">
+              </div>
+          </div>
+      </div>
+      <div id="uploaded-image-container">
+        <img id="uploaded-image" src="" style="display: none;" alt="Uploaded Image">
+        <button id="delete-image" style="display: none;">Delete Image</button>
+      </div>    
+    </div>
+    <form>
+        <textarea id="textcontent" placeholder="Write."></textarea>
+        <input type="hidden" id="mood" name="mood">
+        <div class="bottom">
+            <button type="submit" id="save-entry" class="btn btn-primary">Save Entry</button>
+            <div class="dropdown">
+              <button id="tags" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Tags</button>
+                <div class="dropdown-menu" aria-labelledby="tags">
+                  <a class="dropdown-item" href="#" onclick="selectTag('Fun')">Fun</a>
+                  <a class="dropdown-item" href="#" onclick="selectTag('Productive')">Productive</a>
+                  <a class="dropdown-item" href="#" onclick="selectTag('Relaxing')">Relaxing</a>
+                  <a class="dropdown-item" href="#" onclick="selectTag('Achievement')">Achievement</a>
+                  <a class="dropdown-item" href="#" onclick="selectTag('Friends')">Friends</a>
+                  <a class="dropdown-item" href="#" onclick="selectTag('Adventurous')">Adventurous</a>
+                </div>
+            </div>
+            <p id="chosentags" style="margin-right: 20px;"></p>
+        <input id="uploadimg" type="file" name="image" accept="image/*" placeholder="upload">
+        </div>
+    </form>
+  </section>
+
+<!-- sidebar and display date/day logic -->
+  <script>
+              let sidebar = document.querySelector(".sidebar");
+              let closeBtn = document.querySelector("#btn");
+              // let searchBtn = document.querySelector(".bx-search");
+
+              closeBtn.addEventListener("click", ()=>{
+                  sidebar.classList.toggle("open");
+                  menuBtnChange();//calling the function(optional)
+              });
+              function menuBtnChange() {
+              if(sidebar.classList.contains("open")){
+                  closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+              }else {
+                  closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+              }
+              }
+              const date = new Date();
+                  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                  const formattedDate = date.toLocaleDateString('en-US', options);
+                  document.getElementById("hometop").textContent = formattedDate;
+
+                  function getWeek(date) {
+                  const oneJan = new Date(date.getFullYear(), 0, 1);
+                  const numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+                  return Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
+              }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- Get date/day, set mood, set tags -->
+  <script>
+          function getCurrentDayAndDate() {
+              const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+              const currentDate = new Date();
+              const dayOfWeek = daysOfWeek[currentDate.getDay()];
+              const date = currentDate.toDateString(); // Format: "Sat Mar 26 2024"
+              return { day: dayOfWeek, date: date };
+          }
+          
+          let mood1 = "";
+          
+          function setMood(mood) {
+              const moodImages = document.querySelectorAll('.options img');
+              moodImages.forEach(img => {
+                  img.classList.remove('highlight');
+              });
+              document.getElementById(mood + '_img').classList.add('highlight');
+              document.getElementById("mood").value = mood;
+          }
+          
+          let selectedTags = [];
+          
+          function selectTag(tag) {
+              console.log(tag);
+              if (!selectedTags.includes(tag)) {
+                  console.log(tag);
+                  selectedTags.push(tag);
+                  updateSelectedTags(selectedTags);
+              }
+          }
+          
+          function updateSelectedTags(selectedTags) {
+              const chosentags = document.getElementById('chosentags');
+              chosentags.innerHTML = selectedTags;
+          }
+  </script>
+
+  <!-- upload img to aws, get the url and save whole entry to mongodb-->
+  <script>
+        const data = document.querySelector('form');
+        data.addEventListener('submit', async (e) => {
+            e.preventDefault();
+        // Inside the data.addEventListener('submit', async (e) => { ... }) function
+
+              const content = data.textcontent.value;
+              const mood1 = data.mood.value;
+              const tags = selectedTags;
+              const uploadImg = document.getElementById('uploadimg'); // Get the input element for file upload
+              const image = uploadImg.files[0]; // Get the uploaded file
+              let imageUrl = ''; // Initialize imageUrl variable
+
+              if (image) {
+                  const formData = new FormData(); // Create a FormData object
+                  formData.append('file', image); // Append the uploaded file to the FormData object
+
+                  try {
+                      const response = await fetch('/upload', {
+                          method: 'POST',
+                          body: formData // Send the FormData object to the /upload route
+                      });
+
+                      const data = await response.json(); // Parse the JSON response
+                      imageUrl = data.data; // Get the URL of the uploaded image
+                      console.log(imageUrl);
+                  } catch (error) {
+                      console.error('Error uploading image:', error);
+                  }
+              }
+
+              let { day, date } = getCurrentDayAndDate();
+
+              console.log("Day:", day);
+              console.log("Date:", date);
+              console.log("Mood:", mood1);
+              console.log("Tags:", tags);
+              console.log("Image URL:", imageUrl); // Log the image URL to verify
+
+              try {
+                  const res = await fetch("/save", {
+                      method: 'POST',
+                      body: JSON.stringify({ 
+                          diary: content, 
+                          userId: '<%= user._id %>', 
+                          mood: mood1, 
+                          tags: tags, 
+                          day: day, 
+                          date: date,
+                          imageUrl: imageUrl // Include the imageUrl in the request body
+                      }),
+                      headers: { 'Content-Type': 'application/json' }
+                  });
+                  
+                  const data1 = await res.json();
+                  console.log(data1);
+                  alert("New entry saved");
+              } catch (err) {
+                  console.log(err);
+              }
+
+        });
+  </script>
+
+  <!-- apply template -->
+  <script>
+    function applyTemplate(template) {
+    const homeSection = document.querySelector(".home-section");
+    homeSection.classList.remove("template1", "template2", "template3", "template4", "template5");
+    homeSection.classList.add(template);
+  }
+  </script>
+
+  <!-- display and delete the uploaded image-->
+  <script>
+            const uploadImg = document.getElementById('uploadimg');
+
+          uploadImg.addEventListener('change', function() {
+              const selectedImage = uploadImg.files[0];
+              const uploadedImage = document.getElementById('uploaded-image');
+              const deleteImageButton = document.getElementById('delete-image');
+
+              if (selectedImage) {
+                  const reader = new FileReader();
+                  reader.onload = function(e) {
+                      uploadedImage.src = e.target.result;
+                      uploadedImage.style.display = 'block'; // Display the uploaded image
+                      deleteImageButton.style.display = 'block'; // Display the delete button
+                  }
+                  reader.readAsDataURL(selectedImage);
+              } else {
+                  // Clear the image container if no image is selected
+                  uploadedImage.src = '';
+                  uploadedImage.style.display = 'none';
+                  deleteImageButton.style.display = 'none';
+              }
+          });
+
+          // Add event listener for the delete image button
+          const deleteImageButton = document.getElementById('delete-image');
+          deleteImageButton.addEventListener('click', function() {
+              const uploadedImage = document.getElementById('uploaded-image');
+              const uploadImg = document.getElementById('uploadimg');
+              
+              // Clear the selected file and hide the image and delete button
+              uploadedImage.src = '';
+              uploadedImage.style.display = 'none';
+              deleteImageButton.style.display = 'none';
+              uploadImg.value = ''; // Clear the file input value
+          });
+
+  </script>
+
+  <!-- speech reognition  -->
+  <script>
+    let recognition;
+
+    function startSpeechRecognition() {
+        if (!recognition) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+            recognition.lang = 'en-US'; // Set language
+            recognition.onresult = function(event) {
+                const result = event.results[0][0].transcript;
+                document.getElementById("textcontent").value += result + ' '; // Append recognized text
+            };
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+            };
+        }
+
+        if (!recognition.isStarted) {
+            recognition.start(); // Start recognition
+            // recognition.isStarted = true;
+        } else {
+            recognition.stop(); // Stop recognition
+            // recognition.isStarted = false;
+        }
+    }
+
+    const microphoneIcon = document.getElementById("microphone-icon");
+    microphoneIcon.addEventListener("click", startSpeechRecognition);
+  </script>
+
+
+</body>
+</html>

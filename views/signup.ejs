@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="journals.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="back"> 
+        <button onclick="location.href='/'"><img src="back.png" alt=""></button>
+    </div>   
+    <div class="main">
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <!-- <form action="/signup" method="post" class="register-form" id="register-form"> -->
+                        <form>
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" id="username" placeholder="Your Name"/>
+                            </div>
+                            <div class = "name error"></div>
+
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            </div>
+                            <div class = "email error"></div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password" placeholder="Password"/>
+                            </div>
+                            <div class = "password error"></div>
+
+                            <!-- <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            </div> -->
+                            <!-- <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                            </div> -->
+                            <!-- <button type="submit" class="submit-btn" class="form-submit" onclick="submitbox()">Submit</button> -->
+                            <!-- <a onclick="submitbox()" href="/login">Submit</a> -->
+                            <button style="width: 200px;  
+                            background-color: #194b38; 
+                            color: #fff; 
+                            border: none; 
+                            padding: 10px 20px; 
+                            font-size: 16px; 
+                            border-radius: 5px; 
+                            transition: background-color 0.3s ease;">signup</button>
+                            
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                        <a href="./login" class="signup-image-link">I am already member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        // import { genSalt, hash } from 'bcrypt';
+        // const bcrypt = require('bcrypt');
+        const form = document.querySelector('form')
+        const nameError = document.querySelector('.name.error')
+        const emailError = document.querySelector('.email.error')
+        const passwordError = document.querySelector('.password.error')
+        
+        form.addEventListener('submit', async(e) => {
+            e.preventDefault()
+
+            nameError.textContent=""
+            emailError.textContent=""
+            passwordError.textContent=""
+
+            const name = form.name.value
+            const email = form.email.value
+            let password = form.password.value
+
+            // hashing the password before sending only!!
+            // const salt = await bcrypt.genSalt()
+            // password = await bcrypt.hash(this.password, salt)
+
+            try{
+                const res = await fetch("/signup", {
+                    method: 'POST',
+                    body: JSON.stringify({name, email, password}),
+                    headers:{'Content-Type': 'application/json'}
+                })
+
+                const data1 = await res.json()
+                console.log(data1)
+
+                if(data1.errors){
+                    nameError.textContent = data1.errors.name
+                    emailError.textContent = data1.errors.email
+                    passwordError.textContent = data1.errors.password
+                    console.log("in errors")
+                    console.log(nameError.textContent)
+                    console.log(emailError.textContent)
+                    console.log(passwordError.textContent)
+                }
+                if(data1.user){
+                    console.log("out of errors")
+                    location.assign('/login')
+                }
+            }catch(err){
+                console.log(err)
+            }
+        })
+
+    </script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/mainone.js"></script>
+</body>
+</html>

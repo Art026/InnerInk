@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflect Entries</title>
+    <link rel="stylesheet" href="entrydisplay.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="sidebarstyles.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="type.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus icon'></i> <!-- user image -->
+        <div class="logo_name">
+            <% if(user) {%>
+               Hey, <%= user.name %>
+            <% }%>
+        </div> <!-- name -->
+        <i class='bx bx-menu' id="btn" ></i>
+    </div>
+    <ul class="nav-list">
+      <!-- <li>
+          <i class='bx bx-search' ></i>
+         <input type="text" placeholder="Search...">
+         <span class="tooltip">Search</span>
+      </li> -->
+      <li>
+        <a href="/userhome">
+          <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Today</span>
+        </a>
+         <span class="tooltip">Today</span>
+      </li>
+      <li>
+       <a href="/calendar">
+         <!-- <i class='bx bx-user' ></i> -->
+         <i class='bx bx-grid-alt'></i>
+         <span class="links_name">Calendar</span>
+       </a>
+       <span class="tooltip">Calendar</span>
+     </li>
+     <li>
+       <a href="/timeline">
+         <i class='bx bx-chat' ></i>
+         <span class="links_name">Timeline</span>
+       </a>
+       <span class="tooltip">Timeline</span>
+     </li> <br>
+
+    <li>
+       <a href="#">
+         <a href="/journals"><span class="links_name"><h4> &nbsp; Journals</h4></span> </a>
+       </a>
+     </li>
+     <li>
+       <a href="/jtype">
+         <i class='bx bx-folder' ></i>
+         <span class="links_name">Journal</span>
+       </a>
+       <span class="tooltip">Journal</span>
+     </li>
+     <li>
+      <a href="/reflect">
+        <i class='bx bx-chat' ></i>
+        <span class="links_name">Reflect</span>
+      </a>
+      <span class="tooltip">Reflect</span>
+    </li> 
+     <!-- <li>
+       <a href="#">
+         <i class='bx bx-heart' ></i>
+         <span class="links_name">Bullet</span>
+       </a>
+       <span class="tooltip">Bullet</span>
+     </li> -->
+     <!-- <li>
+       <a href="#">
+         <i class='bx bx-cog'></i>
+         <span class="links_name">30-D Challenge</span>
+       </a>
+       <span class="tooltip">30-Days Challenge</span>
+     </li> -->
+     <li>
+      <a href="/newgoal">
+        <i class='bx bx-cog'></i>
+        <span class="links_name">Goals</span>
+      </a>
+      <span class="tooltip">Goals</span>
+    </li>
+
+     <li class="profile">
+        <a href="/logout">
+            <i class='bx bx-log-out' id="log_out"></i>
+            <span class="links_name">Logout</span>
+        </a>        
+        <!-- <span class="tooltip">Logout</span> -->
+      </li>
+     <!-- <li class="profile">
+         <i class='bx bx-log-out' id="log_out"></i>
+         <p>Logout</p>
+     </li> -->
+    </ul>
+  </div>
+
+      <section class="home-section">
+        <div class="bgimg"></div>
+        <h1>Reflect Entries </h1>
+        <div class="dropdown"  style="margin-left: 80px;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter by Question
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#" onclick="filterEntries('none')">None</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What are you grateful for today?')">grateful</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What made you smile today?')">smile</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What challenges did you face today?')">challenges faced</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What can you do to take care of yourself right now?')">self-care</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What accomplishments are you proud of today?')">Accomplishments</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('Who or what inspired you today?')">Inspiration</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What progress did you make toward your goals today?')">Progress</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('How did you show kindness or compassion to others today?')">Kindness</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What new things did you learn today?')">Learning</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What unexpected blessings did you experience today?')">Blessings</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What moments of joy did you find in your day?')">Joy</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('How did you practice self-discipline or self-control today?')">Self-discipline</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('What are you looking forward to tomorrow?')">Looking forward</a>
+              <a class="dropdown-item" href="#" onclick="filterEntries('In what ways did you grow or challenge yourself today?')">Growth/challenge</a>
+        </div>
+        </div>
+        <div class="entries">
+          <a href="/reflect" class="entry"><button class="add-entry">Add new entry<img src="letter.png" alt=""></button></a>
+          
+            <% entries.forEach(entry => { %>
+              <div class="entry">
+                <h5><% if (entry.date) { %>
+                  <% const date = new Date(entry.date); %>
+                  <% if (!isNaN(date.getTime())) { %>
+                      <%= date.toISOString().substring(0, 10) %>
+                  <% } else { %>
+                      <%= entry.date %>
+                  <% } %>
+              <% } else { %>
+                  <%= entry.date %>
+              <% } %></h5>
+                  <h5><%= entry.day %></h5>
+                    <h4><%= entry.question %></h4>
+                    <p><%= entry.answer %></p>
+                </div>
+            <% }); %>
+        </div>
+        <div class="entry-modal">
+          <div class="entry-modal-content"></div>
+          
+      </div>
+      </section>
+
+    <script>
+            let sidebar = document.querySelector(".sidebar");
+            let closeBtn = document.querySelector("#btn");
+
+            closeBtn.addEventListener("click", ()=>{
+                sidebar.classList.toggle("open");
+                menuBtnChange();//calling the function(optional)
+            });
+            function menuBtnChange() {
+            if(sidebar.classList.contains("open")){
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+            }else {
+                closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+            }
+            }
+    </script>
+
+<script>
+  function filterEntries(question) {
+    const entries = document.querySelectorAll(".entry");
+    entries.forEach(entry => {
+      const entryQuestionElement = entry.querySelector("h4");
+      if (entryQuestionElement) {
+        const entryQuestion = entryQuestionElement.innerText;
+        if (question === 'none' || entryQuestion === question) {
+          entry.style.display = "block";
+        } else {
+          entry.style.display = "none";
+        }
+      }
+    });
+  }
+</script>
+
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const entries = document.querySelectorAll(".entry");
+    const modal = document.querySelector(".entry-modal");
+    const modalContent = document.querySelector(".entry-modal-content");
+
+    entries.forEach(entry => {
+        entry.addEventListener("click", function () {
+            modalContent.innerHTML = entry.innerHTML;
+            modal.style.display = "block";
+        });
+    });
+
+    modal.addEventListener("click", function (e) {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    </script>
+</body>
+</html>

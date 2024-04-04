@@ -1,0 +1,117 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Sign Up Form by Colorlib</title>
+        <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="journals.css">
+
+    </head>
+    <body>
+        <div class="back"> 
+            <button onclick="location.href='/'"><img src="back.png" alt=""></button>
+        </div>    
+        <div class="main">
+            <section class="sign-in">
+                <div class="container">
+                    <div class="signin-content">
+                        <div class="signin-image">
+                            <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
+                            <a href="./signup" class="signup-image-link">Create an account</a>
+                        </div>
+
+                        <div class="signin-form">
+                            <h2 class="form-title">Log In</h2>
+                            <!-- <form action="/login" method="post" class="register-form" id="login-form"> -->
+                            <form>
+                                <div class="form-group">
+                                    <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="name" id="username" placeholder="Your Name"/>
+                                </div>
+                                <div class = "name error"></div>
+                                <div class="form-group">
+                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                    <input type="email" name="email" id="email" placeholder="Your Email"/>
+                                </div>
+                                <div class = "email error"></div>
+                                <div class="form-group">
+                                    <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                    <input type="password" name="password" id="password" placeholder="Password"/>
+                                </div>
+                                <div class = "password error"></div>
+
+                                <button type="submit" style="width: 200px;  
+                                background-color: #194b38; 
+                                color: #fff; 
+                                border: none; 
+                                padding: 10px 20px; 
+                                font-size: 16px; 
+                                border-radius: 5px; 
+                                transition: background-color 0.3s ease;">login</button>
+                            </form>
+                            <div class="social-login">
+                                <span class="social-label">Or login with</span>
+                                <ul class="socials">
+                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <script>
+                const form = document.querySelector('form')
+                const nameError = document.querySelector('.name.error')
+                const emailError = document.querySelector('.email.error')
+                const passwordError = document.querySelector('.password.error')
+                
+                form.addEventListener('submit', async(e) => {
+                    e.preventDefault()
+        
+                    nameError.textContent=""
+                    emailError.textContent=""
+                    passwordError.textContent=""
+        
+                    const name = form.name.value
+                    const email = form.email.value
+                    const password = form.password.value
+        
+                    try{
+                        const res = await fetch("/login", {
+                            method: 'POST',
+                            body: JSON.stringify({name, email, password}),
+                            headers:{'Content-Type': 'application/json'}
+                        })
+        
+                        const data1 = await res.json()
+                        console.log(data1)
+        
+                        if(data1.errors){
+                            nameError.textContent = data1.errors.name
+                            emailError.textContent = data1.errors.email
+                            passwordError.textContent = data1.errors.password
+                            console.log("in errors")
+                            console.log(nameError.textContent)
+                            console.log(emailError.textContent)
+                            console.log(passwordError.textContent)
+                        }
+                        if(data1.user){
+                            console.log("out of errors")
+                            location.assign('/userhome')
+                        }
+                    }catch(err){
+                        console.log(err)
+                    }
+                })
+        
+            </script>
+        </div>
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+    </html>

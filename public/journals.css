@@ -1,0 +1,64 @@
+.proverb-container {
+    text-align: center; /* Center align the content */
+    margin-top: 10px; /* Add some margin from the top */
+    padding: 20px; /* Add padding for better spacing */
+    background-color: white;
+    opacity: 0.6;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+    width: 400px;
+    height: 400px;
+    margin-left: 150px;
+    transition: all 0.3s ease; /* Add transition for smooth effect */
+}
+
+.proverb-container:hover {
+    transform: scale(1.05); /* Expand the box on hover */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Add a stronger shadow on hover */
+    opacity: 1;
+}
+
+.proverb-container img{
+    width: 400px;
+    height: 400px;
+}
+
+.boxes{
+    display: flex;
+    margin-top: 10%;
+}
+
+
+.back img{
+    height: 40px;
+    width: 40px;
+
+}
+.back button{
+    margin: 20px;
+    margin-left: 40px;
+    border: 2px;
+    border-radius: 25px;
+    width: 60px;
+    height: 60px;
+    background-color: transparent;
+}
+
+.back button:hover {
+    transform: scale(1.05); /* Expand the box on hover */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Add a stronger shadow on hover */
+}
+
+.bgimage{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('bg27.jpg'); /* Replace 'background-image.jpg' with the path to your image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1; /* Ensure the background image stays behind other content */
+}
+
+.boxes h3{
+    color:rgb(28, 207, 168);
+    
+}

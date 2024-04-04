@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Entries</title>
+    <link rel="stylesheet" href="entrydisplay.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="sidebarstyles.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="type.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+  <%- include("partials/sb.ejs") %>
+
+      <section class="home-section">
+        <div class="bgimg"></div>
+        <h1>Journal Entries</h1>
+        <div class="dropdown" style="margin-left: 80px;">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter by Tag
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" onclick="filterEntries('none')">None</a>
+            <a class="dropdown-item" href="#" onclick="filterEntries('Fun')">Fun</a>
+            <a class="dropdown-item" href="#" onclick="filterEntries('Productive')">Productive</a>
+            <a class="dropdown-item" href="#" onclick="filterEntries('Relaxing')">Relaxing</a>
+            <a class="dropdown-item" href="#" onclick="filterEntries('Achievement')">Achievement</a>
+            <a class="dropdown-item" href="#" onclick="filterEntries('Friends')">Friends</a>
+            <a class="dropdown-item" href="#" onclick="filterEntries('Adventurous')">Adventurous</a>
+          </div>
+        </div>
+        
+        <div class="entries">
+          <a href="/jtype" class="entry"><button class="add-entry">Add new entry<img src="letter.png" alt=""></button></a>
+            <% entries.forEach(entry1 => { %>
+                <div class="entry">
+                  <h4><% if (entry1.date) { %>
+                      <% const date = new Date(entry1.date); %>
+                      <% if (!isNaN(date.getTime())) { %>
+                          <%= date.toISOString().substring(0, 10) %>
+                      <% } else { %>
+                          <%= entry1.date %>
+                      <% } %>
+                  <% } else { %>
+                      <%= entry1.date %>
+                  <% } %></h4>
+                  <h5><%= entry1.day %></h5>
+                  <h5>Mood:<%= entry1.mood %></h5>
+                  <p><%= entry1.diary %></p>
+                  <h6>Tags:<%= entry1.tags %></h6>
+                  <% if (entry1.image) { %>
+                      <img src="<%= entry1.image %>" alt="Image" style="width: 100px; height: 80px;"/>
+                  <% } %>
+                  <button class="delete-entry" data-entry-id="<%= entry1._id %>">Delete</button>
+                </div>
+            <% }); %>
+
+            
+        </div>
+        <div class="entry-modal">
+            <div class="entry-modal-content"></div>
+            
+        </div>
+    </section>
+    
+    
+<!-- sidebar -->
+    <!-- <script>
+            let sidebar = document.querySelector(".sidebar");
+            let closeBtn = document.querySelector("#btn");
+            // let searchBtn = document.querySelector(".bx-search");
+
+            closeBtn.addEventListener("click", ()=>{
+                sidebar.classList.toggle("open");
+                menuBtnChange();//calling the function(optional)
+            });
+            function menuBtnChange() {
+            if(sidebar.classList.contains("open")){
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+            }else {
+                closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+            }
+            }
+    </script> -->
+
+
+<!-- expanded view -->
+    <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              const entries = document.querySelectorAll(".entry");
+              const modal = document.querySelector(".entry-modal");
+              const modalContent = document.querySelector(".entry-modal-content");
+
+              entries.forEach(entry => {
+                  entry.addEventListener("click", function () {
+                      modalContent.innerHTML = entry.innerHTML;
+                      modal.style.display = "block";
+
+                      // Attach event listener to delete button in modal content
+                      const deleteButton = modalContent.querySelector(".delete-entry");
+                      deleteButton.addEventListener("click", async function() {
+                          const entryId = deleteButton.getAttribute("data-entry-id");
+                          if (confirm("Are you sure you want to delete this entry?")) {
+                              try {
+                                  const response = await fetch(`/delete-entry/${entryId}`, {
+                                      method: "DELETE"
+                                  });
+                                  if (response.ok) {
+                                      entry.remove(); // Remove entry from DOM
+                                      modal.style.display = "none"; // Hide modal
+                                      console.log("Entry deleted successfully");
+                                  } else {
+                                      console.error("Failed to delete entry:", response.statusText);
+                                  }
+                              } catch (error) {
+                                  console.error("Error deleting entry:", error);
+                              }
+                          }
+                      });
+                  });
+              });
+
+              modal.addEventListener("click", function (e) {
+                  if (e.target === modal) {
+                      modal.style.display = "none";
+                  }
+              });
+          });
+
+    </script>
+
+<!-- filterss -->
+<script>  
+function filterEntries(tag) {
+    console.log(tag);
+    const entries = document.querySelectorAll(".entry");
+    if (tag === 'none') {
+        entries.forEach(entry => {
+            entry.style.display = "block";
+        });
+    } else {
+        entries.forEach(entry => {
+            const entryTagsElement = entry.querySelector("h6");
+            if (entryTagsElement) {
+                const entryTags = entryTagsElement.innerText.split(':')[1].split(',').map(tag => tag.trim());
+                console.log(entryTags);
+                let found = false;
+                entryTags.forEach(entryTag => {
+                    if (entryTag === tag) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    entry.style.display = "block";
+                } else {
+                    entry.style.display = "none";
+                }
+            }
+        });
+    }
+}
+
+</script>
+
+
+<script>
+  // Add event listener for delete buttons
+      const deleteButtons = document.querySelectorAll(".delete-entry");
+      deleteButtons.forEach(button => {
+          button.addEventListener("click", async function() {
+              const entryId = button.getAttribute("data-entry-id");
+              console.log("hiiiiiiiiiiiiiii")
+              console.log(entryId);
+              if (confirm("Are you sure you want to delete this entry?")) {
+                  try {
+                      const response = await fetch(`/delete-entry/${entryId}`, {
+                          method: "DELETE"
+                      });
+                      if (response.ok) {
+                          button.parentElement.remove();
+                          console.log("entry deleted successfully");
+                      } else {
+                          console.error("Failed to delete entry:", response.statusText);
+                      }
+                  } catch (error) {
+                      console.error("Error deleting entry:", error);
+                  }
+              }
+          });
+      });
+</script>
+</body>
+</html>

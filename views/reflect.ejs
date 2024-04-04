@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="sidebarstyles.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="reflect.css">
+
+</head>
+<body>  
+  <%- include("partials/sb.ejs") %>
+      <div class="bgimg"></div>
+      <div class="container">
+        <form id="reflectionForm">
+            <div class="box">
+                <div class="question-container">
+                    <h2 id="question"></h2>
+                </div>    
+                <div class="answer-container">
+                    <textarea id="answer" placeholder="Write your answer here"></textarea>
+                </div>
+                <div class="navigation">
+                    <button id="prevBtn" onclick="prevQuestion()">&#10094; Prev</button>
+                    <button type="submit">Save</button>
+                    <button type="button" id="nextBtn" onclick="nextQuestion()">Next &#10095;</button>
+                </div>
+            </div>
+        </form>
+        
+      <script src="script.js"></script>
+
+    <script>
+
+function getCurrentDayAndDate() {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const currentDate = new Date();
+    const dayOfWeek = daysOfWeek[currentDate.getDay()];
+    const date = currentDate.toDateString(); // Format: "Sat Mar 26 2024"
+    return { day: dayOfWeek, date: date };
+}
+    document.getElementById('reflectionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = document.getElementById('question').innerText;
+        const answer = document.getElementById('answer').value;
+
+        let { day, date } = getCurrentDayAndDate();
+
+        try {
+            const res = await fetch('/reflectsave', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question, userId: '<%= user._id %>', answer, day:day, date:date })
+            });
+
+            const data = await res.json();
+            console.log(data);
+            alert(("reflect saved!"));
+        } catch (err) {
+            console.error(err);
+        }
+    });
+    </script>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
+<script>
+      let sidebar = document.querySelector(".sidebar");
+      let closeBtn = document.querySelector("#btn");
+    
+      closeBtn.addEventListener("click", ()=>{
+        sidebar.classList.toggle("open");
+        menuBtnChange();
+      });
+      function menuBtnChange() {
+       if(sidebar.classList.contains("open")){
+         closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+       }else {
+         closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+       }
+      }
+        </script>
+
+        <script>
+            const questions = [
+                    "What are you grateful for today?",
+                    "What made you smile today?",
+                    "What challenges did you face today?",
+                    "What can you do to take care of yourself right now?",
+                    "What accomplishments are you proud of today?",
+                    "Who or what inspired you today?",
+                    "What progress did you make toward your goals today?",
+                    "How did you show kindness or compassion to others today?",
+                    "What new things did you learn today?",
+                    "What unexpected blessings did you experience today?",
+                    "What moments of joy did you find in your day?",
+                    "How did you practice self-discipline or self-control today?",
+                    "What are you looking forward to tomorrow?",
+                    "In what ways did you grow or challenge yourself today?"
+                    // Add more questions as needed
+            ];
+
+            let currentQuestionIndex = 0;
+            const questionElement = document.getElementById("question");
+            const answerElement = document.getElementById("answer");
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+
+            function showQuestion() {
+            questionElement.innerText = questions[currentQuestionIndex];
+            answerElement.value = ""; // Clear answer textarea
+            updateButtonStates();
+            }
+
+            function updateButtonStates() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.disabled = currentQuestionIndex === questions.length - 1;
+            }
+
+            function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+            }
+
+            function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            }
+            }
+
+            // Initialize the page with the first question
+            showQuestion();
+
+        </script>
+</body>
+</html>

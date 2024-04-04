@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline</title>
+    <link rel="stylesheet" href="timeline.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="sidebarstyles.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <%- include("partials/sb.ejs") %>
+      <section class="home-section">
+        <div class="timeline">
+            <% let previousDate = null; %>
+            <% let isLeft = true; %>
+            <% entries.forEach(entry => { %>
+                <% if (entry.date && entry.date.toDateString() !== previousDate) { %>
+                    <div class="timeline-item <%= isLeft ? 'left' : 'right' %>">
+                        <a href="/journals">
+                            <div class="date-box">
+                                <!-- Display date if it exists -->
+                                <p><strong><%= entry.date.toDateString() %></strong></p> 
+                                <!-- Display entry count for the date -->
+                                <p>Total Entries: <%= entryCounts.get(entry.date.toDateString()) || 0 %></p>
+                                <div class="columns">
+                                    <div class="left-column">Journal: 0</div>
+                                    <div class="right-column">Reflect: 0</div>
+                                </div>
+                            </div>
+                        </a>
+
+
+                    </div>
+                    <% previousDate = entry.date.toDateString(); %>
+                    <% isLeft = !isLeft; %>
+                <% } %>
+            <% }); %>
+        </div>
+      </section>
+    
+<!-- sidebar -->
+      <script>
+            let sidebar = document.querySelector(".sidebar");
+            let closeBtn = document.querySelector("#btn");
+            // let searchBtn = document.querySelector(".bx-search");
+
+            closeBtn.addEventListener("click", ()=>{
+                sidebar.classList.toggle("open");
+                menuBtnChange();//calling the function(optional)
+            });
+            function menuBtnChange() {
+            if(sidebar.classList.contains("open")){
+                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+            }else {
+                closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+            }
+            }
+
+
+      </script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+
+
+$(document).ready(function() {
+    $('.date-box').hover(function() {
+        const date = $(this).find('p:first-child').text(); // Get date from date-box
+        const $leftColumn = $(this).closest('.timeline-item').find('.left-column');
+        const $rightColumn = $(this).closest('.timeline-item').find('.right-column');
+        $.ajax({
+            url: '/count',
+            method: 'GET',
+            data: { date: date, userId: '<%= user._id %>'  },
+            success: function(response) {
+                const journalCount = response.journalCount || 0;
+                const reflectCount = response.reflectCount || 0;
+                if ($(this).closest('.timeline-item').hasClass('left')) {
+                    $leftColumn.text('Journal: ' + journalCount);
+                    $rightColumn.text('Reflect: ' + reflectCount);
+                } else {
+                    $leftColumn.text('Reflect: ' + reflectCount);
+                    $rightColumn.text('Journal: ' + journalCount);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+});
+
+
+
+</script>
+</body>
+</html>

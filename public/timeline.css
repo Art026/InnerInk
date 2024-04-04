@@ -1,0 +1,86 @@
+.timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 100px;
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(to bottom, #d157a2, #4e0777);
+    z-index: 1;
+}
+
+.timeline-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 90%; /* Adjust width of each side */
+    position: relative;
+    cursor: pointer;
+}
+
+.right {
+    margin-left: auto; /* Adjust margin to push right boxes to the right */
+}
+
+.date-box {
+    padding: 10px;
+    background-image: linear-gradient( 174.2deg,  rgba(255,244,228,1) 7.1%, rgba(240,246,238,1) 67.4% );    transition: all 0.3s ease;
+}
+
+.date-box:hover {
+    transform: translateY(-10px);
+    background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(176,229,208,1) 42%, rgba(92,202,238,0.41) 93.6% );
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.columns {
+    display: none;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+.left .date-box:hover .columns {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    right: 120%; /* Adjust position for left box */
+}
+
+.right .date-box:hover .columns {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    left: 120%; /* Adjust position for right box */
+}
+
+.left-column,
+.right-column {
+    width: 100px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px; /* Adjust margin for spacing */
+}
+.timeline-item a {
+    color: inherit; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+}
+
+.timeline-item a:hover {
+    text-decoration: none; /* Remove underline on hover */
+}
