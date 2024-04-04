@@ -8,7 +8,7 @@ InnerInk is a personal journaling web application designed to provide users with
 
 * **Secure Journaling**: InnerInk offers end-to-end encryption to ensure the privacy and security of your personal thoughts and reflections.
 
-* **Customizable Entries**: Users can customize their journal entries with different fonts, colors, and formatting options to express themselves creatively.
+* **Customizable Entries**: Users can customize their journal entries with different templates, colors, and formatting options to express themselves creatively.
 
 * **Mood Tracking**: InnerInk allows users to track their mood over time, helping them identify patterns and trends in their emotional well-being.
 
@@ -18,6 +18,6 @@ InnerInk is a personal journaling web application designed to provide users with
 
 ## Technologies Used
 
-* Frontend: React.js, HTML, CSS, Bootstrap
+* Frontend: HTML, CSS, Bootstrap
 * Backend: Node.js, Express.js, MongoDB
 * Deployment: AWS
