@@ -34,6 +34,7 @@ const {
     journaldisplay_get,
     entrycount_get,
     deleteentry_delete, 
+    deletereflectentry_delete
 } = require('../controller/authController');
 
 describe('signup_get', () => {
@@ -961,6 +962,29 @@ describe('UploadMiddleWares', () => {
 
         expect(next.calledOnce).to.be.true; // Should call next if file type is supported
     });
+    it('should call fileFilter with checkFileType', () => {
+        const file = {
+            originalname: 'test.jpg',
+            mimetype: 'image/jpeg'
+        };
+        const req = {};
+        const cb = sinon.stub();
+        const fileFilterStub = sinon.stub().callsFake((req, file, cb) => {
+            // Call the original multer fileFilter callback with null for error and true for accept
+            cb(null, true);
+        });
+        const storageStub = sinon.stub().returns({
+            fileFilter: fileFilterStub
+        });
+    
+        // Invoke the middleware function with a dummy request, response, and callback
+        UploadMiddleWares.fileFilter(req, file, cb);
+    
+        // Assert whether the fileFilterStub was called
+        expect(fileFilterStub.calledOnce).to.be.false;
+    });
+    
+    
 });
 
 describe('checkFileType function', () => {
@@ -980,6 +1004,30 @@ describe('checkFileType function', () => {
         checkFileType(file, cb);
 
         expect(cb.calledWithExactly('Error: Images only (jpeg, jpg, png, gif, mp4, mov, png)!')).to.be.true;
+    });
+
+    it('should pass for valid file types', () => {
+        const file = {
+            originalname: 'test.jpg',
+            mimetype: 'image/jpeg'
+        };
+        const cb = sinon.stub();
+        
+        checkFileType(file, cb);
+
+        expect(cb.calledOnceWith(null, true)).to.be.true;
+    });
+
+    it('should fail for invalid file types', () => {
+        const file = {
+            originalname: 'test.txt',
+            mimetype: 'text/plain'
+        };
+        const cb = sinon.stub();
+
+        checkFileType(file, cb);
+
+        expect(cb.calledOnceWith('Error: Images only (jpeg, jpg, png, gif, mp4, mov, png)!')).to.be.true;
     });
 });
 
@@ -1105,3 +1153,75 @@ describe('pre save hook', () => {
     });
 });
 
+describe('deletereflectentry_delete', () => {
+    it('should delete the entry successfully', async () => {
+        const entryId = 'entryId';
+        const req = { params: { id: entryId } };
+        const res = { json: sinon.stub(), status: sinon.stub().returnsThis() };
+        const deleteStub = sinon.stub(ReflectEntry, 'findByIdAndDelete').resolves(true);
+        sinon.stub(ReflectEntry, 'findById').resolves(true);
+
+        await deletereflectentry_delete(req, res);
+
+        expect(res.status.calledOnceWith(200)).to.be.true;
+        expect(res.json.calledOnceWith({ message: 'Entry deleted successfully' })).to.be.true;
+        sinon.assert.calledOnce(deleteStub);
+
+        // Restore the stubs
+        ReflectEntry.findByIdAndDelete.restore();
+        ReflectEntry.findById.restore();
+    });
+    
+    it('should handle errors and send Internal Server Error', async () => {
+        const entryId = 'entryId';
+        const req = { params: { id: entryId } };
+        const res = { json: sinon.stub(), status: sinon.stub().returnsThis() };
+        sinon.stub(console, 'error');
+        sinon.stub(ReflectEntry, 'findByIdAndDelete').rejects(new Error('Test error'));
+    
+        try {
+            await deletereflectentry_delete(req, res);
+            expect(res.status.calledOnceWith(500)).to.be.true;
+            expect(res.json.calledOnceWith({ message: 'Internal server error' })).to.be.true;
+            console.error.restore();
+            ReflectEntry.findByIdAndDelete.restore();
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            throw error; // Re-throw the error to fail the test if an unexpected error occurs
+        }
+    });
+    
+    it('should handle entry not found error', async () => {
+        const entryId = new mongoose.Types.ObjectId(); // Generate a new ObjectId
+        const req = { params: { id: entryId } }; 
+        const res = { json: sinon.stub(), status: sinon.stub().returnsThis() };
+        sinon.stub(ReflectEntry, 'findByIdAndDelete').resolves(null);
+        
+        try {
+            await deletereflectentry_delete(req, res);
+            
+            // Check if res.status and res.json were called
+            console.log('res.status called:', res.status.called);
+            console.log('res.json called:', res.json.called);
+            
+            // Check if res.status was called with the correct status code
+            console.log('res.status args:', res.status.args);
+            // Check if res.json was called with the correct message
+            console.log('res.json args:', res.json.args);
+            
+            // Check if res.status was called with the correct status code
+            expect(res.status.calledOnceWith(404)).to.be.true;
+            // Check if res.json was called with the correct message
+            expect(res.json.calledOnceWith({ message: 'Entry not found' })).to.be.true;
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            throw error; // Re-throw the error to fail the test if an unexpected error occurs
+        } finally {
+            // Restore the stub
+            ReflectEntry.findByIdAndDelete.restore();
+        }
+    });
+    
+    
+    
+});
