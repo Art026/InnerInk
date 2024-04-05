@@ -61,7 +61,7 @@
                     const userId = '<%= user._id %>'; // Accessing the user ID from EJS
                     const response = await fetch('/reflectentries?userId=' + userId);
                     if (!response.ok) {
-                        throw new Error('Failed to fetch journal entries');
+                        throw new Error('Failed to fetch reflect entries');
                     }
                     // const responseData = await response.json();
                     // Redirect to journaldisplay page with the user ID as a query parameter

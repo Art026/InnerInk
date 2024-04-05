@@ -53,6 +53,7 @@ const s3 = new AWS.S3();
 
 router.delete('/delete-entry/:id', authController.deleteentry_delete);
 
+router.delete('/delete-reflect-entry/:id', authController.deletereflectentry_delete);
 
 module.exports = router
 

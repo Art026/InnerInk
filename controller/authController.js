@@ -383,4 +383,21 @@ module.exports.deleteentry_delete = async(req,res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+    module.exports.deletereflectentry_delete = async(req,res) => {
+        try {
+            const entryId = req.params.id; // Correct way to access the id parameter
+            const entry1 = await ReflectEntry.findById(entryId);
+
+            if (!entry1) {
+                return res.status(404).json({ message: 'Entry not found' });
+            }
+            await ReflectEntry.findByIdAndDelete(entryId); // Use findByIdAndDelete to delete the entry directly
+
+            res.status(200).json({ message: 'Entry deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting entry:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 module.exports.handleErrors = handleErrors;
