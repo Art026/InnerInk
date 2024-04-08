@@ -24,9 +24,15 @@
 <body>
   <%- include("partials/sb.ejs") %>
 
-      <section class="home-section">
+  <section class="home-section">
         <div class="bgimg"></div>
         <h1>Journal Entries</h1>
+        <div class="search-container"  style="margin-left: 35%;">
+            <input type="text" id="search-input" placeholder="Search entries...">
+            <button onclick="searchEntries()" type="button" class="btn btn-outline-info">Search</button>
+            <button onclick="clearSearch()" type="button" class="btn btn-outline-info">Clear</button> <!-- Clear button -->
+
+          </div>
         <div class="dropdown" style="margin-left: 80px;">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Filter by Tag
@@ -63,37 +69,110 @@
                   <% if (entry1.image) { %>
                       <img src="<%= entry1.image %>" alt="Image" style="width: 100px; height: 80px;"/>
                   <% } %>
-                  <button class="delete-entry" data-entry-id="<%= entry1._id %>">Delete</button>
+                  <button type="button" class="btn btn-outline-danger delete-entry" data-entry-id="<%= entry1._id %>">Delete</button>
                 </div>
             <% }); %>
-
-            
         </div>
         <div class="entry-modal">
             <div class="entry-modal-content"></div>
-            
         </div>
-    </section>
-    
-    
-<!-- sidebar -->
-    <!-- <script>
-            let sidebar = document.querySelector(".sidebar");
-            let closeBtn = document.querySelector("#btn");
-            // let searchBtn = document.querySelector(".bx-search");
+  </section>
 
-            closeBtn.addEventListener("click", ()=>{
-                sidebar.classList.toggle("open");
-                menuBtnChange();//calling the function(optional)
+<!-- search -->
+<script>
+    // Initialize modal and modal content outside the function
+    const entryModal = document.querySelector(".entry-modal");
+    const modalContent = document.querySelector(".entry-modal-content");
+
+    async function searchEntries() {
+        const searchInput = document.getElementById("search-input").value.trim();
+        try {
+            let response;
+            if (searchInput === "") {
+                const userId = '<%= user._id %>'; // Accessing the user ID from EJS
+                console.log("inside clear" + userId);
+                response = await fetch('/journaldisplay?userId=' + userId);
+                window.location.href = '/journaldisplay?userId=' + userId;
+            } else {
+                response = await fetch(`/search-entries?keyword=${searchInput}`);
+            }
+            if (response.ok) {
+                const entries = await response.json();
+                displaySearchResults(entries);
+            } else {
+                console.error("Failed to search entries:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error searching entries:", error);
+        }
+    }
+
+    function clearSearch() {
+        document.getElementById("search-input").value = ""; // Clear the search input
+        searchEntries(); // Trigger search to display all entries
+    }
+    
+    
+    function displaySearchResults(entries) {
+        const entriesContainer = document.querySelector(".entries");
+        entriesContainer.innerHTML = ""; // Clear existing entries
+        entries.forEach(entry => {
+            const entryHTML = `
+                <div class="entry">
+                    <h4>${entry.date ? new Date(entry.date).toISOString().substring(0, 10) : entry.date}</h4>
+                    <h5>${entry.day}</h5>
+                    <h5>Mood: ${entry.mood}</h5>
+                    <p>${entry.diary}</p>
+                    <h6>Tags: ${entry.tags.join(', ')}</h6>
+                    ${entry.image ? `<img src="${entry.image}" alt="Image" style="width: 100px; height: 80px;"/>` : ''}
+                    <button class="delete-entry" data-entry-id="${entry._id}">Delete</button>
+                </div>
+            `;
+            entriesContainer.innerHTML += entryHTML;
+        });
+
+        // Attach event listeners to each entry
+        const entryElements = document.querySelectorAll(".entry");
+        entryElements.forEach(entry => {
+            entry.addEventListener("click", function () {
+                // Set modal content to the clicked entry's content
+                modalContent.innerHTML = entry.innerHTML;
+                // Display the modal
+                entryModal.style.display = "block";
             });
-            function menuBtnChange() {
-            if(sidebar.classList.contains("open")){
-                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
-            }else {
-                closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+        });
+    }
+
+    // Event listener to close modal when clicking outside of it
+    entryModal.addEventListener("click", function (e) {
+        if (e.target === entryModal) {
+            entryModal.style.display = "none";
+        }
+    });
+
+    // Event listener for delete button inside modal content
+    modalContent.addEventListener("click", async function(event) {
+        if (event.target.classList.contains("delete-entry")) {
+            const entryId = event.target.getAttribute("data-entry-id");
+            if (confirm("Are you sure you want to delete this entry?")) {
+                try {
+                    const response = await fetch(`/delete-entry/${entryId}`, {
+                        method: "DELETE"
+                    });
+                    if (response.ok) {
+                        event.target.closest('.entry').remove(); // Remove entry from DOM
+                        entryModal.style.display = "none"; // Hide modal
+                        console.log("Entry deleted successfully");
+                    } else {
+                        console.error("Failed to delete entry:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error deleting entry:", error);
+                }
             }
-            }
-    </script> -->
+        }
+    });
+</script>
 
 
 <!-- expanded view -->
@@ -142,64 +221,65 @@
     </script>
 
 <!-- filterss -->
-<script>  
-function filterEntries(tag) {
-    console.log(tag);
-    const entries = document.querySelectorAll(".entry");
-    if (tag === 'none') {
-        entries.forEach(entry => {
-            entry.style.display = "block";
-        });
-    } else {
-        entries.forEach(entry => {
-            const entryTagsElement = entry.querySelector("h6");
-            if (entryTagsElement) {
-                const entryTags = entryTagsElement.innerText.split(':')[1].split(',').map(tag => tag.trim());
-                console.log(entryTags);
-                let found = false;
-                entryTags.forEach(entryTag => {
-                    if (entryTag === tag) {
-                        found = true;
+    <script>  
+    function filterEntries(tag) {
+        console.log(tag);
+        const entries = document.querySelectorAll(".entry");
+        if (tag === 'none') {
+            entries.forEach(entry => {
+                entry.style.display = "block";
+            });
+        } else {
+            entries.forEach(entry => {
+                const entryTagsElement = entry.querySelector("h6");
+                if (entryTagsElement) {
+                    const entryTags = entryTagsElement.innerText.split(':')[1].split(',').map(tag => tag.trim());
+                    console.log(entryTags);
+                    let found = false;
+                    entryTags.forEach(entryTag => {
+                        if (entryTag === tag) {
+                            found = true;
+                        }
+                    });
+                    if (found) {
+                        entry.style.display = "block";
+                    } else {
+                        entry.style.display = "none";
                     }
-                });
-                if (found) {
-                    entry.style.display = "block";
-                } else {
-                    entry.style.display = "none";
                 }
-            }
-        });
+            });
+        }
     }
-}
 
-</script>
+    </script>
 
 
-<script>
-  // Add event listener for delete buttons
-      const deleteButtons = document.querySelectorAll(".delete-entry");
-      deleteButtons.forEach(button => {
-          button.addEventListener("click", async function() {
-              const entryId = button.getAttribute("data-entry-id");
-              console.log("hiiiiiiiiiiiiiii")
-              console.log(entryId);
-              if (confirm("Are you sure you want to delete this entry?")) {
-                  try {
-                      const response = await fetch(`/delete-entry/${entryId}`, {
-                          method: "DELETE"
-                      });
-                      if (response.ok) {
-                          button.parentElement.remove();
-                          console.log("entry deleted successfully");
-                      } else {
-                          console.error("Failed to delete entry:", response.statusText);
-                      }
-                  } catch (error) {
-                      console.error("Error deleting entry:", error);
-                  }
-              }
-          });
-      });
-</script>
+<!-- Add event listener for delete buttons -->
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete-entry");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async function() {
+                const entryId = button.getAttribute("data-entry-id");
+                console.log("hiiiiiiiiiiiiiii")
+                console.log(entryId);
+                if (confirm("Are you sure you want to delete this entry?")) {
+                    try {
+                        const response = await fetch(`/delete-entry/${entryId}`, {
+                            method: "DELETE"
+                        });
+                        if (response.ok) {
+                            button.parentElement.remove();
+                            console.log("entry deleted successfully");
+                        } else {
+                            console.error("Failed to delete entry:", response.statusText);
+                        }
+                    } catch (error) {
+                        console.error("Error deleting entry:", error);
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

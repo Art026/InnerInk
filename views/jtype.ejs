@@ -347,7 +347,6 @@
   <!-- speech reognition  -->
   <script>
     let recognition;
-
     function startSpeechRecognition() {
         if (!recognition) {
             recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
@@ -369,9 +368,31 @@
             // recognition.isStarted = false;
         }
     }
-
     const microphoneIcon = document.getElementById("microphone-icon");
     microphoneIcon.addEventListener("click", startSpeechRecognition);
+  </script>
+
+<!-- timeline -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const timelineLink = document.getElementById("timeline-link");
+      if (timelineLink) {
+          timelineLink.addEventListener("click", async function(event) {
+              event.preventDefault(); // Prevent default link behavior
+              const userId = '<%= user._id %>'; // Accessing the user ID from EJS
+              
+              try {
+                  const response = await fetch('/timeline?userId=' + userId);
+                  if (!response.ok) {
+                      throw new Error('Failed to fetch timeline entries');
+                  }
+                  window.location.href = '/timeline?userId=' + userId;
+              } catch (error) {
+                  console.error(error);
+              }
+          });
+      }
+  });
   </script>
 
 

@@ -32,7 +32,7 @@ const JournalEntrySchema = new mongoose.Schema({
         type: String // You can use 'Buffer' for binary data or 'String' for storing image URLs
     }
 });
-
+JournalEntrySchema.index({ diary: 'text' });
 const entry = mongoose.model("entry", JournalEntrySchema);
 
 module.exports = entry;

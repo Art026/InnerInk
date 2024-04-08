@@ -384,7 +384,7 @@ module.exports.deleteentry_delete = async(req,res) => {
     }
 }
 
-    module.exports.deletereflectentry_delete = async(req,res) => {
+module.exports.deletereflectentry_delete = async(req,res) => {
         try {
             const entryId = req.params.id; // Correct way to access the id parameter
             const entry1 = await ReflectEntry.findById(entryId);
@@ -399,5 +399,22 @@ module.exports.deleteentry_delete = async(req,res) => {
             console.error('Error deleting entry:', error);
             res.status(500).json({ message: 'Internal server error' });
         }
+}
+
+module.exports.searchEntries = async (req, res) => {
+    console.log("auth");
+    const keyword = req.query.keyword; // Access keyword from query parameters
+    console.log(keyword);
+    try {
+        // Perform text search using Mongoose's find() method with $text operator
+        const results = await entry.find(
+            { $text: { $search: keyword } } // Search keyword in the 'diary' field
+        );
+        res.json(results);
+    } catch (error) {
+        console.error('Error searching entries:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
+}
+
 module.exports.handleErrors = handleErrors;

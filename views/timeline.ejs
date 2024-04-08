@@ -12,32 +12,42 @@
 <body>
   <%- include("partials/sb.ejs") %>
       <section class="home-section">
+
+        <% if (entries.length === 0) { %>
+            <div class="no-entries" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+                <img src="oopsgal.png" alt="" style="margin-bottom: 20px;">
+                <h2>Oops! Looks like you haven't made any entries yet!</h2><br>
+                <a href="/jtype"><button type="button" class="btn btn-outline-danger">Start Now!</button></a>
+
+            </div>
+        <% }
+        
+        else { %>
         <div class="timeline">
-            <% let previousDate = null; %>
-            <% let isLeft = true; %>
-            <% entries.forEach(entry => { %>
-                <% if (entry.date && entry.date.toDateString() !== previousDate) { %>
-                    <div class="timeline-item <%= isLeft ? 'left' : 'right' %>">
-                        <a href="/journals">
-                            <div class="date-box">
-                                <!-- Display date if it exists -->
-                                <p><strong><%= entry.date.toDateString() %></strong></p> 
-                                <!-- Display entry count for the date -->
-                                <p>Total Entries: <%= entryCounts.get(entry.date.toDateString()) || 0 %></p>
-                                <div class="columns">
-                                    <div class="left-column">Journal: 0</div>
-                                    <div class="right-column">Reflect: 0</div>
+                <% let previousDate = null; %>
+                <% let isLeft = true; %>
+                <% entries.forEach(entry => { %>
+                    <% if (entry.date && entry.date.toDateString() !== previousDate) { %>
+                        <div class="timeline-item <%= isLeft ? 'left' : 'right' %>">
+                            <a href="/journals">
+                                <div class="date-box">
+                                    <!-- Display date if it exists -->
+                                    <p><strong><%= entry.date.toDateString() %></strong></p> 
+                                    <!-- Display entry count for the date -->
+                                    <p>Total Entries: <%= entryCounts.get(entry.date.toDateString()) || 0 %></p>
+                                    <div class="columns">
+                                        <div class="left-column">Journal: 0</div>
+                                        <div class="right-column">Reflect: 0</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-
-
-                    </div>
-                    <% previousDate = entry.date.toDateString(); %>
-                    <% isLeft = !isLeft; %>
-                <% } %>
-            <% }); %>
+                            </a>
+                        </div>
+                        <% previousDate = entry.date.toDateString(); %>
+                        <% isLeft = !isLeft; %>
+                    <% } %>
+                <% }); %>
         </div>
+        <% } %>
       </section>
     
 <!-- sidebar -->
