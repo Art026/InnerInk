@@ -31,7 +31,6 @@
             <input type="text" id="search-input" placeholder="Search entries...">
             <button onclick="searchEntries()" type="button" class="btn btn-outline-info">Search</button>
             <button onclick="clearSearch()" type="button" class="btn btn-outline-info">Clear</button> <!-- Clear button -->
-
           </div>
         <div class="dropdown" style="margin-left: 80px;">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -93,16 +92,16 @@
                 console.log("inside clear" + userId);
                 response = await fetch('/journaldisplay?userId=' + userId);
                 window.location.href = '/journaldisplay?userId=' + userId;
-            } else {
-                response = await fetch(`/search-entries?keyword=${searchInput}`);
-            }
-            if (response.ok) {
+            }else {
+                const userId = '<%= user._id %>'; // Accessing the user ID from EJS
+                response = await fetch(`/search-entries?keyword=${searchInput}&userId=${userId}`); // Include userId in the request URL            }
+            }if (response.ok) {
                 const entries = await response.json();
                 displaySearchResults(entries);
             } else {
                 console.error("Failed to search entries:", response.statusText);
             }
-        } catch (error) {
+        }catch (error) {
             console.error("Error searching entries:", error);
         }
     }

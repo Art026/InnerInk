@@ -404,11 +404,12 @@ module.exports.deletereflectentry_delete = async(req,res) => {
 module.exports.searchEntries = async (req, res) => {
     console.log("auth");
     const keyword = req.query.keyword; // Access keyword from query parameters
+    const userId = req.query.userId; // Access user ID from query parameters
     console.log(keyword);
     try {
         // Perform text search using Mongoose's find() method with $text operator
         const results = await entry.find(
-            { $text: { $search: keyword } } // Search keyword in the 'diary' field
+            { userId, $text: { $search: keyword } } // Search keyword in the 'diary' field for the given userId
         );
         res.json(results);
     } catch (error) {
