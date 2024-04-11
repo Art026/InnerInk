@@ -27,7 +27,7 @@
   <div class="background-image">
     <div class="middle">
       <p id="word"></p>
-      <p style="text-align: center; margin : 90px; font-size: 22px;">
+      <p style="text-align: center; ">
         Discover the power of expression with Inner Ink, where every word becomes a brushstroke on the canvas of your life's narrative. 
         Embark on a journey of self-discovery, reflection, and growth, as your thoughts and emotions find their voice in the written word. 
         Let Inner Ink be your trusted companion in crafting the story of your life, one heartfelt entry at a time. <br>
@@ -39,7 +39,7 @@
 
 <nav class="transparent-bar solid-bar">
   <ul class="menu">
-      <h1 id="logo"><img id="logoimg" src="logooo1.png"  style="width: 200px;"></h1> 
+      <h1 id="logo"><img id="logoimg" src="logooo1.png"></h1> 
       <li><a href="#middle">Home</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="/signup">Create account</a></li>
@@ -161,8 +161,8 @@
 
 <script>
   var i = 0;
-var txt = 'Your Journey in Words'; // Corrected spelling of "Journey"
-var speed = 50;
+  var txt = 'Your Journey in Words'; // Corrected spelling of "Journey"
+  var speed = 50;
 
 function typeWriter() {
   if (i < txt.length) {
@@ -189,7 +189,16 @@ $(document).ready(function() {
 });
 </script>
 
-
+<script>
+  window.addEventListener('resize', function() {
+    if (window.innerWidth < 600) {
+        window.resizeTo(600, window.innerHeight);
+    }
+    if (window.innerHeight < 400) {
+        window.resizeTo(window.innerWidth, 400);
+    }
+}); 
+</script>
 
 
 </body>

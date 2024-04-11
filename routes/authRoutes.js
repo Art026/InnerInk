@@ -57,6 +57,10 @@ router.delete('/delete-reflect-entry/:id', requireAuth, authController.deleteref
 
 router.get('/search-entries',requireAuth, authController.searchEntries);
 
+router.get('/message', authController.message_get);
+
+router.post('/message', authController.handleMessage);
+
 
 module.exports = router
 

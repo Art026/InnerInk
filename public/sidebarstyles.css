@@ -7,6 +7,32 @@
   box-sizing: border-box;
   font-family: "Poppins" , sans-serif;
 }
+@media screen and (max-width: 1650px) {
+  .mid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-component,
+  .dashboard-component1 {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 30%;
+  }
+}
+@media screen and (max-width: 10000px) and (min-width:1651px){
+  .mid{
+    display: flex;
+    flex-direction: row;
+  } 
+}
+.homemid {
+  display: flex;
+  align-items: flex-start; 
+  padding-left: 8%;
+  padding-top: 50px;
+  flex-direction: column;
+}
 .sidebar{
   position: fixed;
   left: 0;
@@ -14,7 +40,6 @@
   height: 100%;
   width: 78px;
   background: #cccccc;
-  /* opacity: 0.5; */
   padding: 6px 14px;
   z-index: 99;
   transition: all 0.5s ease;
@@ -233,13 +258,6 @@
 }
 
 
-.homemid {
-  display: flex;
-  align-items: flex-start; 
-  padding-left: 70px;
-  padding-top: 50px;
-  flex-direction: column;
-}
 
 .week-container {
   display: flex;
@@ -279,10 +297,6 @@
   padding-top: 20px;
 }
 
-.mid{
-  display: flex;
-  flex-direction: row;
-}
 
 
 

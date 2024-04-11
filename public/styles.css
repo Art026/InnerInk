@@ -4,7 +4,109 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
+    min-width: 600px; /* Set the minimum width */
+    min-height: 400px; /* Set the minimum height */
     font-family: Arial, sans-serif;
+}
+
+@media screen and (max-width: 10000px) and (min-width:1451px){
+  .menu li a{
+    font-size: 25px;
+  }
+  .middle p {
+    font-size: 20px;
+    margin: 90px; 
+  }
+  #logo {
+    float:left;
+    margin-left: 90px;
+  }
+  #logo img{
+    width: 200px;
+  }
+
+  #word {
+    margin: auto;
+    /* margin-bottom: 150px; */
+    color: rgb(35, 95, 48);
+    /* font-family: cursive; */
+        --s: 0.1em;   /* the thickness of the line */
+        --c: rgb(35, 95, 48); /* the color */
+    /* font: 700 normal 2.5em 'tahoma'; */
+    font-family: "Dancing Script", cursive;
+        /* font-family: 'Times New Roman'; */
+        font-optical-sizing: auto;
+        font-weight: 900;
+        font-size: 60px;
+}
+
+svg {
+  display: block;
+  font: 5em 'Montserrat';
+  width: 800px;
+  height: 100px;
+  margin: 0 auto;
+}
+#bottom td{
+  padding-right: 200px;
+  padding-top: 200px;
+}
+#bottom img{
+  width:600px;
+  height:500px;
+}
+
+}
+
+
+
+@media screen and (max-width: 1450px) {
+  .menu li a{
+    font-size: 20px;
+}
+  .middle p {
+    margin: 90px; 
+    font-size: 15px;
+  }
+  #logo {
+    float:left;
+    margin-left: 90px;
+  }
+  #logo img{
+    margin-top: 30px;
+    width: 120px;
+  }
+
+  #word {
+    margin: auto;
+    color: rgb(35, 95, 48);
+        --s: 0.1em;   /* the thickness of the line */
+        --c: rgb(35, 95, 48); /* the color */
+    font-family: "Dancing Script", cursive;
+        font-optical-sizing: auto;
+        font-weight: 900;
+        font-size: 30px;
+}
+
+
+svg {
+  display: block;
+  font: 4em 'Montserrat';
+  width: 800px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+#bottom td{
+  padding-right: 100px;
+  padding-top: 100px;
+}
+#bottom img{
+  width:500px;
+  height:500px;
+}
+
+
 }
 
 .background-image {
@@ -23,7 +125,7 @@ body, html {
 .background-image h1{
     margin-top: 120px;
 }
-  .transparent-bar {
+.transparent-bar {
           width: 100%;
           /* padding: 10px; */
           position: fixed;
@@ -42,11 +144,6 @@ body, html {
 }
 
 
-
-#logo {
-        float:left;
-        margin-left: 90px;
-}
 .menu {
         list-style-type: none;
         margin: 0;
@@ -55,27 +152,23 @@ body, html {
 .menu li {
         display: inline-block;
         margin-right: 20px;
-        font-size: 25px;
         padding-left: 10px;
         padding-right: 10px;
         padding-top: 10px;
         margin-top: 50px;
         
-     }   
+}   
 .menu li a {
         color: rgb(231, 231, 231);
         text-decoration: none;
         margin-right: 70px;
-        color: rgb(51, 71, 51);
-        /* font-family:"Dancing Script",cursive; */
- 
+        color: rgb(51, 71, 51); 
     } 
 .solid-bar {
     background-color: rgba(255, 255, 255, 0.5); 
     /* Change the background color to solid */
     }
 h1 {
-          
         font-family: "Dancing Script", cursive;
         font-optical-sizing: auto;
         /* font-weight: 400; */
@@ -83,29 +176,13 @@ h1 {
         color:  rgb(35, 95, 48);
 }
 h1:hover {--_p: 100%}
-#word {
-    margin: auto;
-    /* margin-bottom: 150px; */
-    color: rgb(35, 95, 48);
-    /* font-family: cursive; */
-        --s: 0.1em;   /* the thickness of the line */
-        --c: rgb(35, 95, 48); /* the color */
-    /* font: 700 normal 2.5em 'tahoma'; */
-    font-family: "Dancing Script", cursive;
-        /* font-family: 'Times New Roman'; */
-        font-optical-sizing: auto;
-        font-weight: 900;
-        font-size: 60px;
 
-
-}
 .middle{
     color: rgba(18, 39, 23, 0.911);
     font-weight: bolder;
 }
-.middle h2{
-    font-size: 50px;
-}
+
+
 
 :root {
     /* 
@@ -215,39 +292,18 @@ h1:hover {--_p: 100%}
   table td{
     text-align: center;
   }
-  /* #names{
-    font-size: 20px;
-    color: rgba(18, 39, 23, 0.911);
-    text-align: justify;
-    }
-#names td{
-        padding-bottom: 50px; 
-        padding-right: 90px;
-        padding-left: 90px;
-  } */
 .w3-opacity-min{opacity:0.75}
 .w3-black{color:rgba(23, 39, 27, 0.911)!important;background-color:#bbbbbb!important}
 
-#bottom td{
-    padding-right: 200px;
-    padding-top: 200px;
 
-}
 #bottom li{
     padding-bottom: 50px;
     padding-top: 50px;
     font-size: 40px;
     color: rgba(18, 39, 23, 0.911);
     font-weight: bolder;
-    text-align: left;
-
-    
+    text-align: left;    
 }
-#bottom img{
-    width:600px;
-    height:500px;
-}
-
 
 #bottom {
     display: flex;
@@ -269,13 +325,6 @@ h1:hover {--_p: 100%}
 	margin: 0;
 }
 
-svg {
-    display: block;
-    font: 5em 'Montserrat';
-    width: 800px;
-    height: 100px;
-    margin: 0 auto;
-}
 
 .text-copy {
     fill: none;
