@@ -121,8 +121,7 @@ module.exports.login_post = async (req, res) => {
         const errors = handleErrors(err);
         res.status(400).json({ errors: 'Incorrect username or password' }); // Return the correct error message
     }
-};
-
+}
 module.exports.logout_get = (req,res) => {
     try{
         res.cookie("jwt", '', {maxAge:1})
@@ -203,7 +202,6 @@ module.exports.reflectsave_post = async (req, res) => {
         res.status(500).json({ error: 'Failed to save reflection' });
     }
 };
-
 module.exports.newgoal_get = async(req,res) => {
     try{
         res.render('todo', { user: req.user });
@@ -212,7 +210,6 @@ module.exports.newgoal_get = async(req,res) => {
         res.status(500).send('Internal Server Error');
     }
 }
-
 async function getCombinedEntries(userId) {
     try {
         const journalEntries = await entry.find({ userId: userId });
@@ -222,8 +219,7 @@ async function getCombinedEntries(userId) {
         console.error("Error fetching entries:", error);
         throw error;
     }
-    }
-
+}
 function countEntriesByDate(entries) {
         const countMap = new Map();
         entries.forEach(entry => {
@@ -231,8 +227,7 @@ function countEntriesByDate(entries) {
             countMap.set(dateString, (countMap.get(dateString) || 0) + 1);
         });
         return countMap;
-    }
-
+}
 module.exports.timeline_get = async (req, res) => {
     try {
         const userId = req.query.userId; // Retrieve user ID from query parameter
@@ -287,7 +282,6 @@ module.exports.upload_post = async(req,res) => {
         res.status(500).json({ status: false, error: "Failed to upload image" });
     }
 };
-
 module.exports.reflectentries_get = async(req,res) => {
     try {
         const userId = req.query.userId; // Retrieve user ID from query parameter
@@ -302,7 +296,6 @@ module.exports.reflectentries_get = async(req,res) => {
         res.status(500).send('Internal Server Error');
     }
 }
-
 module.exports.journaldisplay_get = async(req,res) => {
     try {
         const userId = req.query.userId; // Retrieve user ID from query parameter
@@ -317,7 +310,6 @@ module.exports.journaldisplay_get = async(req,res) => {
         res.status(500).send('Internal Server Error');
     }
 }
-
 module.exports.entrycount_get = async(req,res) => {
     try {
         const { userId } = req.params;
@@ -334,7 +326,6 @@ module.exports.entrycount_get = async(req,res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
-
 require('dotenv').config();
 const AWS = require('aws-sdk');
 const { S3Client } = require('@aws-sdk/client-s3')
@@ -344,7 +335,6 @@ AWS.config.update({
     region: process.env.AWS_REGION
 });
 const s3 = new AWS.S3();
-
 module.exports.deleteentry_delete = async(req,res) => {
     try {
         const entryId = req.params.id; // Correct way to access the id parameter
@@ -383,7 +373,6 @@ module.exports.deleteentry_delete = async(req,res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 module.exports.deletereflectentry_delete = async(req,res) => {
         try {
             const entryId = req.params.id; // Correct way to access the id parameter
@@ -400,14 +389,12 @@ module.exports.deletereflectentry_delete = async(req,res) => {
             res.status(500).json({ message: 'Internal server error' });
         }
 }
-
 module.exports.searchEntries = async (req, res) => {
     console.log("auth");
     const keyword = req.query.keyword; // Access keyword from query parameters
     const userId = req.query.userId; // Access user ID from query parameters
     console.log(keyword);
     try {
-        // Perform text search using Mongoose's find() method with $text operator
         const results = await entry.find(
             { userId, $text: { $search: keyword } } // Search keyword in the 'diary' field for the given userId
         );
@@ -417,14 +404,14 @@ module.exports.searchEntries = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 module.exports.message_get = async(req, res) => {
     try{
         res.render('chatbot')
     }catch (error) {
         console.error('Error rendering signup page:', error);
         res.status(500).send('Internal Server Error');
-    }}
+}
+}
 const axios = require('axios');
 
 async function handleChatGPT(message) {
@@ -433,8 +420,8 @@ async function handleChatGPT(message) {
         url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4',
         headers: {
             'content-type': 'application/json',
-            'X-RapidAPI-Key': '02a3365318msh9eef678e8a64b6ep17f0fbjsn25a0e101b7d8',
-            'X-RapidAPI-Host': 'chatgpt-42.p.rapidapi.com'
+            'X-RapidAPI-Key': 'b3c6e12658msh3210b4d8ab3fe72p1be3dajsn3d5c36180313',
+            'X-RapidAPI-Host': 'chatgpt-42.p.rapidapi.com'            
         },
         data: {
             messages: [
