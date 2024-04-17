@@ -11,7 +11,7 @@ const { requireAuth, checkUser } = require('../middlewares/authMiddlewares');
 const { UploadMiddleWares, checkFileType } = require('../middlewares/fileupload');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
-const {handleErrors} = require('../controller/authController');
+const {handleErrors, handleChatGPT} = require('../controller/authController');
 const { 
     signup_get, 
     signup_post,
@@ -25,7 +25,6 @@ const {
     reflect_get, 
     reflectsave_post, 
     newgoal_get, 
-    newgoal_post, 
     timeline_get, 
     count_get, 
     daycount_get, 
@@ -34,7 +33,10 @@ const {
     journaldisplay_get,
     entrycount_get,
     deleteentry_delete, 
-    deletereflectentry_delete
+    deletereflectentry_delete,
+    message_get,
+    searchEntries,
+    handleMessage
 } = require('../controller/authController');
 
 describe('signup_get', () => {
@@ -606,10 +608,14 @@ describe('upload_post', () => {
 
     it('should return an error if no file is uploaded', async () => {
         const req = { file: null };
-        const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+        const statusStub = sinon.stub().returnsThis();
+        const jsonStub = sinon.stub();
+        const res = { status: statusStub, json: jsonStub };
+
         await upload_post(req, res);
-        expect(res.status.calledOnceWith(403)).to.be.true;
-        expect(res.json.calledOnce).to.be.true;
+
+        expect(statusStub.calledOnceWith(403)).to.be.true;
+        expect(jsonStub.calledOnceWith({ status: false, error: "Please upload a file" })).to.be.true;
     });
 });
 
@@ -1120,7 +1126,7 @@ describe('pre save hook', () => {
     });
   });
 
-  describe('handleErrors function', () => {
+describe('handleErrors function', () => {
     it('should handle different error cases', () => {
         // Test case 1: Incorrect email error
         const error1 = new Error("incorrect email");
@@ -1224,4 +1230,116 @@ describe('deletereflectentry_delete', () => {
     
     
     
+});
+
+describe('searchEntries', () => {
+    it('should search entries based on keyword and user ID', async () => {
+        const req = { query: { keyword: 'test', userId: 'user_id' } };
+        const res = { json: sinon.spy() };
+
+        sinon.stub(entry, 'find').resolves(['entry1', 'entry2']);
+
+        await searchEntries(req, res);
+
+        expect(res.json.calledOnce).to.be.true;
+        expect(res.json.firstCall.args[0]).to.deep.equal(['entry1', 'entry2']);
+
+        entry.find.restore();
+    });
+
+    it('should handle errors appropriately', async () => {
+        const req = { query: { keyword: 'test', userId: 'user_id' } };
+        const res = { json: sinon.spy(), status: sinon.stub().returnsThis() };
+
+        sinon.stub(entry, 'find').throws(new Error('Database error'));
+
+        await searchEntries(req, res);
+
+        expect(res.status.calledOnceWith(500)).to.be.true;
+        expect(res.json.calledOnceWith({ message: 'Internal server error' })).to.be.true;
+
+        entry.find.restore();
+    });
+});
+
+const axios = require('axios');
+
+
+describe('handleMessage', () => {
+    it('should return chatbot response for a valid message', async () => {
+        const req = { body: { message: 'Hello, chatbot!' } };
+        const res = { json: sinon.spy(), status: sinon.stub().returnsThis() };
+
+        sinon.stub(axios, 'request').resolves({ data: 'Chatbot response' });
+
+        await handleMessage(req, res);
+
+        expect(res.json.calledOnceWith({ message: 'Chatbot response' })).to.be.true;
+
+        axios.request.restore();
+    });
+
+    it('should handle empty message', async () => {
+        const req = { body: { message: '' } };
+        const res = { json: sinon.spy(), status: sinon.stub().returnsThis() };
+
+        await handleMessage(req, res);
+
+        expect(res.status.calledOnceWith(400)).to.be.true;
+        expect(res.json.calledOnceWith({ error: 'Empty message' })).to.be.true;
+    });
+
+    it('should handle errors during chatbot response', async () => {
+        const req = { body: { message: 'Hello, chatbot!' } };
+        const res = { json: sinon.spy(), status: sinon.stub().returnsThis() };
+
+        sinon.stub(axios, 'request').rejects(new Error('Chatbot error'));
+
+        await handleMessage(req, res);
+
+        expect(res.status.calledOnceWith(500)).to.be.true;
+        expect(res.json.calledOnceWith({ error: 'An error occurred while processing the request' })).to.be.true;
+
+        axios.request.restore();
+    });
+});
+
+
+describe('handleMessage', () => {
+    it('should handle chatbot messages and return the response', async () => {
+        const req = { body: { message: 'test message' } };
+        const res = { json: sinon.spy(), status: sinon.stub().returnsThis() };
+
+        sinon.stub(axios, 'request').resolves({ data: 'chatbot_response' });
+
+        await handleMessage(req, res);
+
+        expect(res.json.calledOnceWith({ message: 'chatbot_response' })).to.be.true;
+
+        axios.request.restore();
+    });
+
+    it('should handle empty messages', async () => {
+        const req = { body: { message: '' } };
+        const res = { status: sinon.stub().returnsThis(), json: sinon.spy() };
+
+        await handleMessage(req, res);
+
+        expect(res.status.calledOnceWith(400)).to.be.true;
+        expect(res.json.calledOnceWith({ error: 'Empty message' })).to.be.true;
+    });
+
+    it('should handle errors during message handling', async () => {
+        const req = { body: { message: 'test message' } };
+        const res = { status: sinon.stub().returnsThis(), json: sinon.spy() };
+
+        sinon.stub(axios, 'request').rejects(new Error('Request error'));
+
+        await handleMessage(req, res);
+
+        expect(res.status.calledOnceWith(500)).to.be.true;
+        expect(res.json.calledOnceWith({ error: 'An error occurred while processing the request' })).to.be.true;
+
+        axios.request.restore();
+    });
 });

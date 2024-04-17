@@ -396,7 +396,7 @@ module.exports.searchEntries = async (req, res) => {
     console.log(keyword);
     try {
         const results = await entry.find(
-            { userId, $text: { $search: keyword } } // Search keyword in the 'diary' field for the given userId
+            { userId, $text: { $search: keyword} } // Search keyword in the 'diary' field for the given userId
         );
         res.json(results);
     } catch (error) {
@@ -462,7 +462,5 @@ module.exports.handleMessage = async(req, res) => {
         return res.status(500).json({ error: "An error occurred while processing the request" });
     }
 }
-
-
-
+module.exports.handleChatGPT = handleChatGPT;
 module.exports.handleErrors = handleErrors;
