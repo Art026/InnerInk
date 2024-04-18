@@ -1264,7 +1264,6 @@ describe('searchEntries', () => {
 
 const axios = require('axios');
 
-
 describe('handleMessage', () => {
     it('should return chatbot response for a valid message', async () => {
         const req = { body: { message: 'Hello, chatbot!' } };
@@ -1304,7 +1303,6 @@ describe('handleMessage', () => {
     });
 });
 
-
 describe('handleMessage', () => {
     it('should handle chatbot messages and return the response', async () => {
         const req = { body: { message: 'test message' } };
@@ -1341,5 +1339,30 @@ describe('handleMessage', () => {
         expect(res.json.calledOnceWith({ error: 'An error occurred while processing the request' })).to.be.true;
 
         axios.request.restore();
+    });
+});
+
+describe('message_get', () => {
+    it('should render the chatbot page', async () => {
+        const req = {};
+        const res = { render: sinon.spy() }; // Create a spy for render function
+
+        await message_get(req, res);
+
+        sinon.assert.calledWith(res.render, 'chatbot');
+    });
+
+    it('should handle errors and send Internal Server Error', async () => {
+        const req = {};
+        const res = {
+            render: sinon.stub().throws(new Error('Render error')), // Stub render function to throw error
+            status: sinon.stub().returnsThis(),
+            send: sinon.spy()
+        };
+
+        await message_get(req, res);
+
+        sinon.assert.calledWith(res.status, 500);
+        sinon.assert.calledWith(res.send, 'Internal Server Error');
     });
 });
