@@ -396,7 +396,7 @@ module.exports.searchEntries = async (req, res) => {
     console.log(keyword);
     try {
         const results = await entry.find(
-            { userId, $text: { $search: keyword} } // Search keyword in the 'diary' field for the given userId
+            { userId, $text: { $search: keyword } } // Search keyword in the 'diary' field for the given userId
         );
         res.json(results);
     } catch (error) {
